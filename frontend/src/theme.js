@@ -9,4 +9,13 @@ const colors = {
 
 export const theme = {
   background: colors.white,
+  buttonBackground: colors.blue,
+  buttonTitle: colors.white,
+  buttonUnfilledTitle: colors.blue,
+  errorText: colors.red,
+  inputDisabledBackground: colors.grey_0,
+  inputPlaceholder: colors.grey_1,
+  inputBorder: colors.grey_1,
+  label: colors.grey_1,
+  text: colors.black,
 };
