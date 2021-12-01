@@ -1,8 +1,13 @@
 import React from "react";
-import { Text } from "react-native";
+import { StatusBar } from "react-native";
+import { ThemeProvider } from "styled-components/native";
 
 const App = () => {
-  return <Text>Hello!</Text>;
+  return (
+    <ThemeProvider>
+      <StatusBar barStyle="dark-content" />
+    </ThemeProvider>
+  );
 };
 
 export default App;
