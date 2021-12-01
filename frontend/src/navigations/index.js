@@ -1,8 +1,13 @@
 import React from "react";
-import { Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import AuthStack from "./AuthStack";
 
 const Navigation = () => {
-  return <Text>Navigation</Text>;
+  return (
+    <NavigationContainer>
+      <AuthStack />
+    </NavigationContainer>
+  );
 };
 
 export default Navigation;
