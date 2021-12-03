@@ -24,7 +24,7 @@ const Signup = ({ navigation }) => {
   const [name, setName] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirm, setPassowrdConfirm] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [disabled, setDisabled] = useState(true);
 
@@ -84,6 +84,7 @@ const Signup = ({ navigation }) => {
           onSubmitEditing={() => {
             passwordRef.current.focus();
           }}
+          onBlur={() => setUserId(userId.trim())}
           placeholder="Id"
           returnKeyType="next"
         />
@@ -95,6 +96,7 @@ const Signup = ({ navigation }) => {
           onSubmitEditing={() => {
             passwordConfirmRef.current.focus();
           }}
+          onBlur={() => setPassword(password.trim())}
           placeholder="Password"
           returnKeyType="next"
           isPassword
@@ -103,8 +105,9 @@ const Signup = ({ navigation }) => {
           ref={passwordConfirmRef}
           label="Password Confirm"
           value={passwordConfirm}
-          onChangeText={(text) => setPassowrdConfirm(text)}
+          onChangeText={(text) => setPasswordConfirm(text)}
           onSubmitEditing={_handleSignupButtonPress}
+          onBlur={() => setPasswordConfirm(passwordConfirm.trim())}
           placeholder="Password"
           returnKeyType="done"
           isPassword

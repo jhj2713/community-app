@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const Container = styled.View`
   flex-direction: column;
   width: 100%;
-  margin: 10px 0;
+  margin: 10px 0px;
 `;
 const Label = styled.Text`
   font-size: 14px;
@@ -24,7 +24,6 @@ const StyledTextInput = styled.TextInput.attrs(({ theme }) => ({
   border: 1px solid
     ${({ theme, isFocused }) => (isFocused ? theme.text : theme.inputBorder)};
   border-radius: 4px;
-  height: ${({ multiline }) => multiline && "300px"};
 `;
 
 const Input = forwardRef(
