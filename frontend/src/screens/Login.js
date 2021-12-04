@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Input, Button } from "../components";
-import { Alert } from "react-native";
+import { UserContext } from "../contexts";
 
 const Container = styled.View`
   flex: 1;
@@ -23,6 +23,8 @@ const Login = ({ navigation }) => {
   const pwdRef = useRef();
   const insets = useSafeAreaInsets();
 
+  const { dispatch } = useContext(UserContext);
+
   useEffect(() => {
     console.log("login");
   }, []);
@@ -37,7 +39,8 @@ const Login = ({ navigation }) => {
     setPassword(password);
   };
   const _handleLoginButtonPress = () => {
-    Alert.alert("로그인!");
+    const user = { uid: 1, userId, name: "이름", password };
+    dispatch(user);
   };
 
   return (
