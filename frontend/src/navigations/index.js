@@ -1,11 +1,12 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "./AuthStack";
+import Drawer from "./Drawer";
 
 const Navigation = () => {
   return (
     <NavigationContainer>
-      <AuthStack />
+      <Drawer />
     </NavigationContainer>
   );
 };
