@@ -54,6 +54,7 @@ const Login = ({ navigation }) => {
           value={userId}
           onChangeText={_handleUserIdChange}
           onSubmitEditing={() => pwdRef.current.focus()}
+          onBlur={() => setUserId(userId.trim())}
           placeholder="Id"
           returnKeyType="next"
         />
@@ -62,6 +63,7 @@ const Login = ({ navigation }) => {
           value={password}
           onChangeText={_handlePwdChange}
           onSubmitEditing={_handleLoginButtonPress}
+          onBlur={() => setPassword(password.trim())}
           placeholder="Password"
           returnKeyType="done"
           ref={pwdRef}
