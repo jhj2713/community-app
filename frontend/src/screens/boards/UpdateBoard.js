@@ -21,25 +21,39 @@ const ButtonBox = styled.View`
   width: 150px;
   margin: 0 5px;
 `;
+const ErrorText = styled.Text`
+  align-items: flex-start;
+  width: 100%;
+  height: 20px;
+  margin-bottom: 10px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.errorText};
+`;
 
 const UpdateBoard = ({ navigation, route }) => {
   const { routeName } = route.params;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [errorText, setErrorText] = useState("");
 
   const contentRef = useRef();
 
   const _handleSubmitButtonPress = () => {
-    if (routeName === "Free") {
-      navigation.replace("FreeBoardDetail", { routeName: "Free" });
-    } else if (routeName === "Ano") {
-      navigation.replace("AnoBoardDetail", { routeName: "Ano" });
-    } else if (routeName === "Main") {
-      navigation.replace("MainBoardDetail", { routeName: "Main" });
+    if (title == "" || content == "") {
+      setErrorText("Please enter content");
     } else {
-      navigation.replace("GroupBoardDetail", {
-        routeName,
-      });
+      setErrorText("");
+      if (routeName === "Free") {
+        navigation.replace("FreeBoardDetail", { routeName: "Free" });
+      } else if (routeName === "Ano") {
+        navigation.replace("AnoBoardDetail", { routeName: "Ano" });
+      } else if (routeName === "Main") {
+        navigation.replace("MainBoardDetail", { routeName: "Main" });
+      } else {
+        navigation.replace("GroupBoardDetail", {
+          routeName,
+        });
+      }
     }
   };
 
@@ -66,6 +80,7 @@ const UpdateBoard = ({ navigation, route }) => {
           placeholder="Content"
           multiline
         />
+        <ErrorText>{errorText} </ErrorText>
         <ButtonContainer>
           <ButtonBox>
             <Button title="취소" onPress={() => navigation.goBack()} />

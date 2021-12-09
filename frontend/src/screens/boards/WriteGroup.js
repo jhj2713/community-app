@@ -11,15 +11,28 @@ const Container = styled.View`
   padding: 0 20px;
   margin-top: -100px;
 `;
+const ErrorText = styled.Text`
+  align-items: flex-start;
+  width: 100%;
+  height: 20px;
+  margin-bottom: 10px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.errorText};
+`;
 
 const WriteGroup = ({ navigation }) => {
   const [group, setGroup] = useState("");
+  const [errorText, setErrorText] = useState("");
 
   const { dispatch } = useContext(GroupContext);
 
   const _handleSubmitButtonPress = () => {
-    dispatch(group);
-    navigation.navigate("게시판선택");
+    if (group == "") {
+      setErrorText("Please enter group name");
+    } else {
+      dispatch(group);
+      navigation.navigate("게시판선택");
+    }
   };
 
   return (
@@ -32,6 +45,7 @@ const WriteGroup = ({ navigation }) => {
         onSubmitEditing={_handleSubmitButtonPress}
         returnKeyType="done"
       />
+      <ErrorText>{errorText}</ErrorText>
       <Button title="추가" onPress={_handleSubmitButtonPress} />
     </Container>
   );

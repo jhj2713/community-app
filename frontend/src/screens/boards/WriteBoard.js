@@ -11,23 +11,37 @@ const Container = styled.View`
   padding: 0px 20px;
   margin-top: -50px;
 `;
+const ErrorText = styled.Text`
+  align-items: flex-start;
+  width: 100%;
+  height: 20px;
+  margin-bottom: 10px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.errorText};
+`;
 
 const WriteBoard = ({ route, navigation }) => {
   const { routeName } = route.params;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [errorText, setErrorText] = useState("");
 
   const contentRef = useRef();
 
   const _handleSubmitButtonPress = () => {
-    if (
-      routeName == "AnoBoard" ||
-      routeName == "FreeBoard" ||
-      routeName == "MainBoard"
-    ) {
-      navigation.replace(routeName);
+    if (title == "" || content == "") {
+      setErrorText("Please enter content");
     } else {
-      navigation.replace(routeName, { routeName });
+      setErrorText("");
+      if (
+        routeName == "AnoBoard" ||
+        routeName == "FreeBoard" ||
+        routeName == "MainBoard"
+      ) {
+        navigation.replace(routeName);
+      } else {
+        navigation.replace(routeName, { routeName });
+      }
     }
   };
 
@@ -54,6 +68,7 @@ const WriteBoard = ({ route, navigation }) => {
           placeholder="Content"
           multiline
         />
+        <ErrorText>{errorText}</ErrorText>
         <Button title="작성완료" onPress={_handleSubmitButtonPress} />
       </Container>
     </KeyboardAwareScrollView>
