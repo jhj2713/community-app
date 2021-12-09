@@ -1,8 +1,15 @@
 import React from "react";
-import { Text } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { AnoBoard } from "../screens";
+
+const Stack = createStackNavigator();
 
 const AnoBoardStack = () => {
-  return <Text>AnoBoardStack</Text>;
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="AnoBoard" component={AnoBoard} />
+    </Stack.Navigator>
+  );
 };
 
 export default AnoBoardStack;
