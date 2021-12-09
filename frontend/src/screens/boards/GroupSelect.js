@@ -21,6 +21,7 @@ const GroupText = styled.Text`
 
 const GroupSelect = ({ navigation }) => {
   const { groups, deleteGroup } = useContext(GroupContext);
+  const [showGroup, setShowGroup] = useState(groups);
   const [pageNumber, setPageNumber] = useState(1);
   const [searchText, setSearchText] = useState("");
 
@@ -75,7 +76,11 @@ const GroupSelect = ({ navigation }) => {
     setPageNumber((num) => setPageNumber(num + 1));
   };
   const _handleSearchButtonPress = () => {
-    Alert.alert("검색");
+    if (searchText == "") {
+      setShowGroup(groups);
+    } else {
+      setShowGroup(groups.filter((group) => group.name.includes(searchText)));
+    }
   };
 
   return (
@@ -85,7 +90,7 @@ const GroupSelect = ({ navigation }) => {
         setSearchText={setSearchText}
         onPress={_handleSearchButtonPress}
       />
-      <FlatList data={groups} renderItem={ItemView} />
+      <FlatList data={showGroup} renderItem={ItemView} />
       <Pagination
         pageNumber={pageNumber}
         lastPage={5}
