@@ -88,7 +88,13 @@ const FreeBoard = ({ navigation }) => {
         nextButtonPress={_handleNextButtonPress}
       />
       <ButtonBox>
-        <Button title="+" onPress={() => {}} isRound />
+        <Button
+          title="+"
+          onPress={() => {
+            navigation.navigate("WriteFreeBoard", { name: "FreeBoard" });
+          }}
+          isRound
+        />
       </ButtonBox>
     </Container>
   );

@@ -24,6 +24,7 @@ const StyledTextInput = styled.TextInput.attrs(({ theme }) => ({
   border: 1px solid
     ${({ theme, isFocused }) => (isFocused ? theme.text : theme.inputBorder)};
   border-radius: 4px;
+  height: ${({ multiline }) => (multiline ? "300px" : "55px")};
 `;
 
 const Input = forwardRef(
