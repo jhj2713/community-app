@@ -55,7 +55,12 @@ const AnoBoard = ({ navigation }) => {
 
   const ItemView = ({ item }) => {
     return (
-      <BoardBox key={item.id} onPress={() => {}}>
+      <BoardBox
+        key={item.id}
+        onPress={() => {
+          navigation.navigate("AnoBoardDetail", { name: "Ano" });
+        }}
+      >
         <BoardTitle>{item.name}</BoardTitle>
       </BoardBox>
     );

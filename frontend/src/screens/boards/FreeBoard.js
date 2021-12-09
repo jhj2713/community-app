@@ -59,7 +59,12 @@ const FreeBoard = ({ navigation }) => {
 
   const ItemView = ({ item }) => {
     return (
-      <BoardBox key={item.id} onPress={() => {}}>
+      <BoardBox
+        key={item.id}
+        onPress={() => {
+          navigation.navigate("FreeBoardDetail", { name: "Free" });
+        }}
+      >
         <BoardTitle>{item.name}</BoardTitle>
         <BoardUser>{item.user}</BoardUser>
       </BoardBox>

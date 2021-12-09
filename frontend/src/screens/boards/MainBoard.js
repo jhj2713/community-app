@@ -59,7 +59,12 @@ const MainBoard = ({ navigation }) => {
 
   const ItemView = ({ item }) => {
     return (
-      <BoardBox key={item.id} onPress={() => {}}>
+      <BoardBox
+        key={item.id}
+        onPress={() => {
+          navigation.navigate("MainBoardDetail", "Main");
+        }}
+      >
         <BoardTitle>{item.name}</BoardTitle>
         <BoardUser>{item.user}</BoardUser>
       </BoardBox>
