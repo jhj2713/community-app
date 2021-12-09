@@ -38,7 +38,7 @@ const UpdateBoard = ({ navigation, route }) => {
       navigation.replace("MainBoardDetail", { routeName: "Main" });
     } else {
       navigation.replace("GroupBoardDetail", {
-        routeName: "Group",
+        routeName,
       });
     }
   };

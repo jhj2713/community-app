@@ -96,7 +96,7 @@ const BoardDetail = ({ navigation, route }) => {
       navigation.navigate("UpdateMainBoard", { routeName });
     } else {
       navigation.navigate("UpdateGroupBoard", {
-        routeName: "GroupBoardDetail",
+        routeName,
       });
     }
   };
@@ -108,7 +108,7 @@ const BoardDetail = ({ navigation, route }) => {
     } else if (routeName === "Main") {
       navigation.navigate("MainBoard");
     } else {
-      navigation.navigate("GroupBoard");
+      navigation.navigate(routeName, { routeName });
     }
   };
 

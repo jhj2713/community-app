@@ -15,6 +15,7 @@ export const theme = {
   borderBottom: colors.grey_1,
   categoryText: colors.blue,
   errorText: colors.red,
+  groupText: colors.blue,
   inputDisabledBackground: colors.grey_0,
   inputPlaceholder: colors.grey_1,
   inputBorder: colors.grey_1,

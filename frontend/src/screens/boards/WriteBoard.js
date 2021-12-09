@@ -13,13 +13,22 @@ const Container = styled.View`
 `;
 
 const WriteBoard = ({ route, navigation }) => {
+  const { routeName } = route.params;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const contentRef = useRef();
 
   const _handleSubmitButtonPress = () => {
-    navigation.replace(route.params.routeName);
+    if (
+      routeName == "AnoBoard" ||
+      routeName == "FreeBoard" ||
+      routeName == "MainBoard"
+    ) {
+      navigation.replace(routeName);
+    } else {
+      navigation.replace(routeName, { routeName });
+    }
   };
 
   return (

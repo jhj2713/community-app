@@ -10,6 +10,9 @@ import UpdateBoard from "./boards/UpdateBoard";
 import LikeList from "./LikeList";
 import WriteList from "./WriteList";
 import OtherUserDetail from "./OtherUserDetail";
+import GroupSelect from "./boards/GroupSelect";
+import GroupBoard from "./boards/GroupBoard";
+import WriteGroup from "./boards/WriteGroup";
 
 export {
   Login,
@@ -24,4 +27,7 @@ export {
   LikeList,
   WriteList,
   OtherUserDetail,
+  GroupSelect,
+  GroupBoard,
+  WriteGroup,
 };

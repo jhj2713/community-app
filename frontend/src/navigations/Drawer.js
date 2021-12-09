@@ -28,7 +28,11 @@ const Drawer = () => {
       <DrawerNavigator.Screen name="메인화면" component={MainStack} />
       <DrawerNavigator.Screen name="자유게시판" component={FreeBoardStack} />
       <DrawerNavigator.Screen name="익명게시판" component={AnoBoardStack} />
-      <DrawerNavigator.Screen name="그룹게시판" component={GroupBoardStack} />
+      <DrawerNavigator.Screen
+        name="그룹게시판"
+        component={GroupBoardStack}
+        options={{ headerShown: false }}
+      />
     </DrawerNavigator.Navigator>
   );
 };
