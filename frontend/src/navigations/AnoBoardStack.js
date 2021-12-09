@@ -1,6 +1,12 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AnoBoard, BoardDetail, UpdateBoard, WriteBoard } from "../screens";
+import {
+  AnoBoard,
+  BoardDetail,
+  OtherUserDetail,
+  UpdateBoard,
+  WriteBoard,
+} from "../screens";
 
 const Stack = createStackNavigator();
 
@@ -11,6 +17,7 @@ const AnoBoardStack = () => {
       <Stack.Screen name="AnoBoardDetail" component={BoardDetail} />
       <Stack.Screen name="WriteAnoBoard" component={WriteBoard} />
       <Stack.Screen name="UpdateAnoBoard" component={UpdateBoard} />
+      <Stack.Screen name="OtherUserDetail" component={OtherUserDetail} />
     </Stack.Navigator>
   );
 };

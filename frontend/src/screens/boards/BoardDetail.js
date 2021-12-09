@@ -75,7 +75,11 @@ const BoardDetail = ({ navigation, route }) => {
       <Comment>
         <CommentContent>{item.content}</CommentContent>
         {routeName === "Ano" || (
-          <CommentUser onPress={() => {}}>
+          <CommentUser
+            onPress={() => {
+              navigation.navigate("OtherUserDetail");
+            }}
+          >
             <UserName>{item.user}</UserName>
           </CommentUser>
         )}
@@ -115,7 +119,11 @@ const BoardDetail = ({ navigation, route }) => {
         <BoardHeader>
           <Title>제목</Title>
           {routeName === "Ano" || (
-            <BoardUser onPress={() => {}}>
+            <BoardUser
+              onPress={() => {
+                navigation.navigate("OtherUserDetail");
+              }}
+            >
               <UserName>user</UserName>
             </BoardUser>
           )}
