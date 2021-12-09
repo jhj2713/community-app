@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "../../components";
+import { Button, SearchInput, Pagination } from "../../components";
 import styled from "styled-components";
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 
 const Container = styled.View`
   flex: 1;
@@ -35,6 +35,8 @@ const BoardUser = styled.Text`
 `;
 
 const MainBoard = ({ navigation }) => {
+  const [searchText, setSearchText] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
   const [titles, setTitles] = useState([
     { id: 1, name: "제목1", user: "user" },
     { id: 2, name: "제목2", user: "user" },
@@ -44,6 +46,16 @@ const MainBoard = ({ navigation }) => {
     { id: 6, name: "제목6", user: "user" },
     { id: 7, name: "제목7", user: "user" },
   ]);
+
+  const _handleSearchBtnPress = () => {
+    Alert.alert("검색");
+  };
+  const _handlePrevButtonPress = () => {
+    setPageNumber((num) => setPageNumber(num - 1));
+  };
+  const _handleNextButtonPress = () => {
+    setPageNumber((num) => setPageNumber(num + 1));
+  };
 
   const ItemView = ({ item }) => {
     return (
@@ -56,9 +68,20 @@ const MainBoard = ({ navigation }) => {
 
   return (
     <Container>
+      <SearchInput
+        searchText={searchText}
+        setSearchText={setSearchText}
+        onPress={_handleSearchBtnPress}
+      />
       <BoardsContainer>
         <FlatList data={titles} renderItem={ItemView} />
       </BoardsContainer>
+      <Pagination
+        lastPage={10}
+        pageNumber={pageNumber}
+        prevButtonPress={_handlePrevButtonPress}
+        nextButtonPress={_handleNextButtonPress}
+      />
       <ButtonBox>
         <Button title="+" onPress={() => {}} isRound />
       </ButtonBox>
