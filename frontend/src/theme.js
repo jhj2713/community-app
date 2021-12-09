@@ -12,6 +12,7 @@ export const theme = {
   buttonBackground: colors.blue,
   buttonTitle: colors.white,
   buttonUnfilledTitle: colors.blue,
+  borderBottom: colors.grey_1,
   errorText: colors.red,
   inputDisabledBackground: colors.grey_0,
   inputPlaceholder: colors.grey_1,

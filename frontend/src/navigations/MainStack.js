@@ -1,8 +1,15 @@
 import React from "react";
-import { Text } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { MainBoard } from "../screens";
+
+const Stack = createStackNavigator();
 
 const MainStack = () => {
-  return <Text>메인화면</Text>;
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MainBoard" component={MainBoard} />
+    </Stack.Navigator>
+  );
 };
 
 export default MainStack;
