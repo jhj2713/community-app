@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useContext, useState } from "react";
+import React, { useLayoutEffect, useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { Pagination, SearchInput } from "../../components";
 import { GroupContext } from "../../contexts";
@@ -21,7 +21,7 @@ const GroupText = styled.Text`
 
 const GroupSelect = ({ navigation }) => {
   const { groups, deleteGroup } = useContext(GroupContext);
-  const [showGroup, setShowGroup] = useState(groups);
+  const [showGroup, setShowGroup] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [searchText, setSearchText] = useState("");
 
@@ -38,6 +38,11 @@ const GroupSelect = ({ navigation }) => {
       ),
     });
   });
+
+  useEffect(() => {
+    setShowGroup(groups);
+  }, [groups]);
+
   const ItemView = ({ item }) => {
     return (
       <GroupBox
