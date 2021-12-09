@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AnoBoard, BoardDetail, WriteBoard } from "../screens";
+import { AnoBoard, BoardDetail, UpdateBoard, WriteBoard } from "../screens";
 
 const Stack = createStackNavigator();
 
@@ -10,6 +10,7 @@ const AnoBoardStack = () => {
       <Stack.Screen name="AnoBoard" component={AnoBoard} />
       <Stack.Screen name="AnoBoardDetail" component={BoardDetail} />
       <Stack.Screen name="WriteAnoBoard" component={WriteBoard} />
+      <Stack.Screen name="UpdateAnoBoard" component={UpdateBoard} />
     </Stack.Navigator>
   );
 };

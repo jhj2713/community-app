@@ -6,6 +6,7 @@ import FreeBoard from "./boards/FreeBoard";
 import AnoBoard from "./boards/AnoBoard";
 import BoardDetail from "./boards/BoardDetail";
 import WriteBoard from "./boards/WriteBoard";
+import UpdateBoard from "./boards/UpdateBoard";
 
 export {
   Login,
@@ -16,4 +17,5 @@ export {
   FreeBoard,
   BoardDetail,
   WriteBoard,
+  UpdateBoard,
 };

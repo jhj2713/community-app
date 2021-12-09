@@ -58,7 +58,7 @@ const AnoBoard = ({ navigation }) => {
       <BoardBox
         key={item.id}
         onPress={() => {
-          navigation.navigate("AnoBoardDetail", { name: "Ano" });
+          navigation.navigate("AnoBoardDetail", { routeName: "Ano" });
         }}
       >
         <BoardTitle>{item.name}</BoardTitle>
@@ -86,7 +86,7 @@ const AnoBoard = ({ navigation }) => {
         <Button
           title="+"
           onPress={() => {
-            navigation.navigate("WriteAnoBoard", { name: "AnoBoard" });
+            navigation.navigate("WriteAnoBoard", { routeName: "AnoBoard" });
           }}
           isRound
         />

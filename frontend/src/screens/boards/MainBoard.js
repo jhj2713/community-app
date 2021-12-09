@@ -62,7 +62,7 @@ const MainBoard = ({ navigation }) => {
       <BoardBox
         key={item.id}
         onPress={() => {
-          navigation.navigate("MainBoardDetail", "Main");
+          navigation.navigate("MainBoardDetail", { routeName: "Main" });
         }}
       >
         <BoardTitle>{item.name}</BoardTitle>
@@ -91,7 +91,7 @@ const MainBoard = ({ navigation }) => {
         <Button
           title="+"
           onPress={() => {
-            navigation.navigate("WriteMainBoard", { name: "MainBoard" });
+            navigation.navigate("WriteMainBoard", { routeName: "MainBoard" });
           }}
           isRound
         />

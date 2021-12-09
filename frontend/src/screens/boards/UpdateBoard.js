@@ -8,18 +8,39 @@ const Container = styled.View`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.background};
-  padding: 0px 20px;
+  padding: 0 20px;
   margin-top: -50px;
 `;
+const ButtonContainer = styled.View`
+  flex-direction: row;
+  width: 85%;
+  justify-content: center;
+  padding: 10px 30px;
+`;
+const ButtonBox = styled.View`
+  width: 150px;
+  margin: 0 5px;
+`;
 
-const WriteBoard = ({ route, navigation }) => {
+const UpdateBoard = ({ navigation, route }) => {
+  const { routeName } = route.params;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const contentRef = useRef();
 
   const _handleSubmitButtonPress = () => {
-    navigation.replace(route.params.routeName);
+    if (routeName === "Free") {
+      navigation.replace("FreeBoardDetail", { routeName: "Free" });
+    } else if (routeName === "Ano") {
+      navigation.replace("AnoBoardDetail", { routeName: "Ano" });
+    } else if (routeName === "Main") {
+      navigation.replace("MainBoardDetail", { routeName: "Main" });
+    } else {
+      navigation.replace("GroupBoardDetail", {
+        routeName: "Group",
+      });
+    }
   };
 
   return (
@@ -45,10 +66,17 @@ const WriteBoard = ({ route, navigation }) => {
           placeholder="Content"
           multiline
         />
-        <Button title="작성완료" onPress={_handleSubmitButtonPress} />
+        <ButtonContainer>
+          <ButtonBox>
+            <Button title="취소" onPress={() => navigation.goBack()} />
+          </ButtonBox>
+          <ButtonBox>
+            <Button title="수정완료" onPress={_handleSubmitButtonPress} />
+          </ButtonBox>
+        </ButtonContainer>
       </Container>
     </KeyboardAwareScrollView>
   );
 };
 
-export default WriteBoard;
+export default UpdateBoard;

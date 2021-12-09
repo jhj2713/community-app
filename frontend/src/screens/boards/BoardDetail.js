@@ -59,6 +59,7 @@ const CommentContent = styled.Text`
 const CommentUser = styled.TouchableOpacity``;
 
 const BoardDetail = ({ navigation, route }) => {
+  const { routeName } = route.params;
   const [comments, setComments] = useState([
     { id: 1, content: "댓글댓글1", user: "user1" },
     { id: 2, content: "댓글댓글2", user: "user2" },
@@ -73,7 +74,7 @@ const BoardDetail = ({ navigation, route }) => {
     return (
       <Comment>
         <CommentContent>{item.content}</CommentContent>
-        {route.params.name === "Ano" || (
+        {routeName === "Ano" || (
           <CommentUser onPress={() => {}}>
             <UserName>{item.user}</UserName>
           </CommentUser>
@@ -83,22 +84,24 @@ const BoardDetail = ({ navigation, route }) => {
   };
 
   const _handleUpdateButtonPress = () => {
-    if (route.params.name === "Free") {
-      navigation.navigate("UpdateFreeBoard", { name: "FreeBoard" });
-    } else if (route.params.name === "Ano") {
-      navigation.navigate("UpdateAnoBoard", { name: "AnoBoard" });
-    } else if (route.params.name === "Main") {
-      navigation.navigate("UpdateMainBoard", { name: "MainBoard" });
+    if (routeName === "Free") {
+      navigation.navigate("UpdateFreeBoard", { routeName });
+    } else if (routeName === "Ano") {
+      navigation.navigate("UpdateAnoBoard", { routeName });
+    } else if (routeName === "Main") {
+      navigation.navigate("UpdateMainBoard", { routeName });
     } else {
-      navigation.navigate("UpdateGroupBoard", { name: "GroupBoard" });
+      navigation.navigate("UpdateGroupBoard", {
+        routeName: "GroupBoardDetail",
+      });
     }
   };
   const _handleDeleteButtonPress = () => {
-    if (route.params.name === "Free") {
+    if (routeName === "Free") {
       navigation.navigate("FreeBoard");
-    } else if (route.params.name === "Ano") {
+    } else if (routeName === "Ano") {
       navigation.navigate("AnoBoard");
-    } else if (route.params.name === "Main") {
+    } else if (routeName === "Main") {
       navigation.navigate("MainBoard");
     } else {
       navigation.navigate("GroupBoard");
@@ -107,12 +110,12 @@ const BoardDetail = ({ navigation, route }) => {
 
   return (
     <Container>
-      {route.params.name === "Main" && <CategoryText>자유게시판</CategoryText>}
+      {routeName === "Main" && <CategoryText>자유게시판</CategoryText>}
       <Board>
         <BoardHeader>
           <Title>제목</Title>
-          {route.params.name === "Ano" || (
-            <BoardUser onPress={() => navigation.navigate("OtherUserDetail")}>
+          {routeName === "Ano" || (
+            <BoardUser onPress={() => {}}>
               <UserName>user</UserName>
             </BoardUser>
           )}
