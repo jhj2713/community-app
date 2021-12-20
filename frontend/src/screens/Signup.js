@@ -19,6 +19,15 @@ const ErrorText = styled.Text`
   line-height: 20px;
   color: ${({ theme }) => theme.errorText};
 `;
+const ButtonContainer = styled.View`
+  width: 100%;
+  align-items: flex-end;
+  margin-top: -10px;
+  margin-bottom: -10px;
+`;
+const ButtonBox = styled.View`
+  width: 100px;
+`;
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -88,6 +97,16 @@ const Signup = ({ navigation }) => {
           placeholder="Id"
           returnKeyType="next"
         />
+        <ButtonContainer>
+          <ButtonBox>
+            <Button
+              title="중복확인"
+              onPress={() => Alert.alert("중복확인")}
+              disabled={userId === ""}
+              isFilled={false}
+            />
+          </ButtonBox>
+        </ButtonContainer>
         <Input
           ref={passwordRef}
           label="Password"
