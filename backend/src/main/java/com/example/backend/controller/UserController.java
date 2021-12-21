@@ -41,4 +41,13 @@ public class UserController {
         }
     }
 
+    @PostMapping("/api/user/update")
+    public ResponseDto update(@RequestBody User user) {
+        User findUser = userService.update(user);
+        findUser.setUserId(user.getUserId());
+        findUser.setUsername(user.getUsername());
+        findUser.setPassword(user.getPassword());
+        return new ResponseDto(HttpStatus.OK.value(), 1);
+    }
+
 }

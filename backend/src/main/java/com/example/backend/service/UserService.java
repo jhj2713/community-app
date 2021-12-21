@@ -27,4 +27,10 @@ public class UserService {
                 .orElseGet(() -> { return new User(); });
     }
 
+    @Transactional
+    public User update(User user) {
+        return userRepository.findById(user.getId())
+                .orElseGet(() -> { return new User(); });
+    }
+
 }

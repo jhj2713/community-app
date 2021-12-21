@@ -5,6 +5,7 @@ import { Input, Button } from "../components";
 import styled from "styled-components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Alert } from "react-native";
+import axios from "axios";
 
 const Container = styled.View`
   flex: 1;
@@ -24,7 +25,7 @@ const ErrorText = styled.Text`
 
 const UserDetail = () => {
   const { user, dispatch } = useContext(UserContext);
-  const { uid } = user;
+  const { id } = user;
   const [userId, setUserId] = useState(user.userId);
   const [username, setUsername] = useState(user.username);
   const [password, setPassword] = useState("");
@@ -40,7 +41,7 @@ const UserDetail = () => {
   useEffect(() => {
     if (didMountRef.current) {
       let _errorMsg = "";
-      if (!name) {
+      if (!username) {
         _errorMsg = "Please enter yout name";
       } else if (!userId) {
         _errorMsg = "Please enter your id";
@@ -62,11 +63,25 @@ const UserDetail = () => {
     );
   }, [username, userId, password, passwordConfirm, errorMsg]);
 
-  const _handleUpdateButtonPress = () => {
-    Alert.alert("수정 완료");
-    dispatch({ userId, username, password, uid });
-    setPassword("");
-    setPasswordConfirm("");
+  const _handleUpdateButtonPress = async () => {
+    axios
+      .post("http://10.0.2.2:8000/api/user/update", {
+        id,
+        userId,
+        username,
+        password,
+      })
+      .then((res) => {
+        if (res.data.data == 1) {
+          dispatch({ userId, username, password, id });
+          setPassword("");
+          setPasswordConfirm("");
+          Alert.alert("수정 완료");
+        }
+      })
+      .catch((err) => {
+        Alert.alert(err.message);
+      });
   };
 
   return (
