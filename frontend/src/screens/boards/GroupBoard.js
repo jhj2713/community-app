@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Alert, FlatList } from "react-native";
 import { Button, SearchInput, Pagination } from "../../components";
+import axios from "axios";
 
 const Container = styled.View`
   flex: 1;
@@ -38,16 +39,41 @@ const GroupBoard = ({ route, navigation }) => {
   const { routeName, category } = route.params;
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [titles, setTitles] = useState([
-    { id: 1, name: "제목1", user: "user" },
-    { id: 2, name: "제목2", user: "user" },
-    { id: 3, name: "제목3", user: "user" },
-    { id: 4, name: "제목4", user: "user" },
-    { id: 5, name: "제목5", user: "user" },
-  ]);
+  const [lastPage, setLastPage] = useState(1);
+  const [boards, setBoards] = useState([]);
 
   const _handleSearchButtonPress = () => {
-    Alert.alert("검색");
+    if (searchText === "") {
+      axios
+        .get(
+          `http://10.0.2.2:8000/api/board/groupboards/${category}?page=${
+            pageNumber - 1
+          }&size=7&sort=id,DESC`,
+        )
+        .then((res) => {
+          const data = res.data.data;
+          setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+          setBoards(data.content);
+        })
+        .catch((err) => {
+          Alert.alert(err.messsage);
+        });
+    } else {
+      axios
+        .get(
+          `http://10.0.2.2:8000/api/board/groupboard/${searchText}?page=${
+            pageNumber - 1
+          }&size=7&sort=id,DESC`,
+        )
+        .then((res) => {
+          const data = res.data.data;
+          setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+          setBoards(data.content);
+        })
+        .catch((err) => {
+          Alert.alert(err.message);
+        });
+    }
   };
   const _handlePrevButtonPress = () => {
     setPageNumber((num) => setPageNumber(num - 1));
@@ -59,13 +85,32 @@ const GroupBoard = ({ route, navigation }) => {
     return (
       <BoardBox
         key={item.id}
-        onPress={() => navigation.navigate("GroupBoardDetail", { routeName })}
+        onPress={() =>
+          navigation.navigate("GroupBoardDetail", { routeName, board: item })
+        }
       >
-        <BoardTitle>{item.name}</BoardTitle>
-        <BoardUser>{item.user}</BoardUser>
+        <BoardTitle>{item.title}</BoardTitle>
+        <BoardUser>User</BoardUser>
       </BoardBox>
     );
   };
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://10.0.2.2:8000/api/board/groupboards/${category}?page=${
+          pageNumber - 1
+        }&size=7&sort=id,DESC`,
+      )
+      .then((res) => {
+        const data = res.data.data;
+        setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+        setBoards(data.content);
+      })
+      .catch((err) => {
+        Alert.alert(err.messsage);
+      });
+  }, [pageNumber]);
 
   return (
     <Container>
@@ -75,10 +120,10 @@ const GroupBoard = ({ route, navigation }) => {
         onPress={_handleSearchButtonPress}
       />
       <BoardsContainer>
-        <FlatList data={titles} renderItem={ItemView} />
+        <FlatList data={boards} renderItem={ItemView} />
       </BoardsContainer>
       <Pagination
-        lastPage={5}
+        lastPage={lastPage}
         pageNumber={pageNumber}
         prevButtonPress={_handlePrevButtonPress}
         nextButtonPress={_handleNextButtonPress}

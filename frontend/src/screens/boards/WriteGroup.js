@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Button, Input } from "../../components";
+import axios from "axios";
 import { GroupContext } from "../../contexts";
+import { Alert } from "react-native";
 
 const Container = styled.View`
   flex: 1;
@@ -30,8 +32,15 @@ const WriteGroup = ({ navigation }) => {
     if (group == "") {
       setErrorText("Please enter group name");
     } else {
-      dispatch(group);
-      navigation.navigate("게시판선택");
+      axios
+        .post("http://10.0.2.2:8000/api/saveCategory", { name: group })
+        .then((res) => {
+          dispatch();
+          navigation.navigate("게시판선택");
+        })
+        .catch((err) => {
+          Alert.alert(err.message);
+        });
     }
   };
 

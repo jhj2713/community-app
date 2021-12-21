@@ -68,4 +68,14 @@ public class BoardService {
         return  boardRepository.findByBoardIdAndTitleContaining(1, search, pageable);
     }
 
+    @Transactional
+    public Page<Board> groupBoards(Pageable pageable, int category) {
+        return boardRepository.findAllByCategory(category, pageable);
+    }
+
+    @Transactional
+    public Page<Board> searchGroupBoards(Pageable pageable, int category, String search) {
+        return  boardRepository.findByCategoryAndTitleContaining(category, search, pageable);
+    }
+
 }

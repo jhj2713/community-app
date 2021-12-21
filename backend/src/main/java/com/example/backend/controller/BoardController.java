@@ -60,4 +60,14 @@ public class BoardController {
         return new ResponseDto(HttpStatus.OK.value(), boardService.searchAnoBoards(pageable, search));
     }
 
+    @GetMapping("/api/board/groupboards/{category}")
+    public ResponseDto anoBoards(Pageable pageable, @PathVariable int category) {
+        return new ResponseDto(HttpStatus.OK.value(), boardService.groupBoards(pageable, category));
+    }
+
+    @GetMapping("/api/board/groupboard/{search}")
+    public ResponseDto searchGroupBoards(Pageable pageable, @PathVariable String search) {
+        return new ResponseDto(HttpStatus.OK.value(), boardService.searchAnoBoards(pageable, search));
+    }
+
 }

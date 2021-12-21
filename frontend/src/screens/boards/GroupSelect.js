@@ -23,7 +23,10 @@ const GroupSelect = ({ navigation }) => {
   const { groups, deleteGroup } = useContext(GroupContext);
   const [showGroup, setShowGroup] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
   const [searchText, setSearchText] = useState("");
+
+  const { dispatch } = useContext(GroupContext);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -40,6 +43,10 @@ const GroupSelect = ({ navigation }) => {
   });
 
   useEffect(() => {
+    dispatch();
+  }, []);
+  useEffect(() => {
+    setLastPage(Math.floor((groups.length - 1) / 7) + 1);
     setShowGroup(groups);
   }, [groups]);
 
@@ -99,7 +106,7 @@ const GroupSelect = ({ navigation }) => {
       <FlatList data={showGroup} renderItem={ItemView} />
       <Pagination
         pageNumber={pageNumber}
-        lastPage={5}
+        lastPage={lastPage}
         prevButtonPress={_handlePrevButtonPress}
         nextButtonPress={_handleNextButtonPress}
       />
