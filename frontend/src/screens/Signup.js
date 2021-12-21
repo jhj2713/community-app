@@ -87,6 +87,7 @@ const Signup = ({ navigation }) => {
         Alert.alert(err.message);
       });
   };
+  const _handleDoubleCheck = () => {};
 
   return (
     <KeyboardAwareScrollView extraScrollHeight={20}>
@@ -119,7 +120,7 @@ const Signup = ({ navigation }) => {
           <ButtonBox>
             <Button
               title="중복확인"
-              onPress={() => Alert.alert("중복확인")}
+              onPress={_handleDoubleCheck}
               disabled={user.userId === ""}
               isFilled={false}
             />
