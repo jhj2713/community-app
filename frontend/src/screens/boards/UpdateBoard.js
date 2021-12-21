@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Input, Button } from "../../components";
+import { Alert } from "react-native";
+import axios from "axios";
 
 const Container = styled.View`
   flex: 1;
@@ -32,6 +34,7 @@ const ErrorText = styled.Text`
 
 const UpdateBoard = ({ navigation, route }) => {
   const { routeName } = route.params;
+  const [board, setBoard] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [errorText, setErrorText] = useState("");
@@ -43,17 +46,24 @@ const UpdateBoard = ({ navigation, route }) => {
       setErrorText("Please enter content");
     } else {
       setErrorText("");
-      if (routeName === "Free") {
-        navigation.replace("FreeBoardDetail", { routeName: "Free" });
-      } else if (routeName === "Ano") {
-        navigation.replace("AnoBoardDetail", { routeName: "Ano" });
-      } else if (routeName === "Main") {
-        navigation.replace("MainBoardDetail", { routeName: "Main" });
-      } else {
-        navigation.replace("GroupBoardDetail", {
-          routeName,
+      axios
+        .post("http://10.0.2.2:8000/api/board/update", board)
+        .then((res) => {
+          if (routeName === "Free") {
+            navigation.replace("FreeBoardDetail", { routeName: "Free" });
+          } else if (routeName === "Ano") {
+            navigation.replace("AnoBoardDetail", { routeName: "Ano" });
+          } else if (routeName === "Main") {
+            navigation.replace("MainBoardDetail", { routeName: "Main" });
+          } else {
+            navigation.replace("GroupBoardDetail", {
+              routeName,
+            });
+          }
+        })
+        .catch((err) => {
+          Alert.alert(err.message);
         });
-      }
     }
   };
 

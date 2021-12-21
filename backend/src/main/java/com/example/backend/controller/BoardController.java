@@ -20,4 +20,10 @@ public class BoardController {
         return new ResponseDto(HttpStatus.OK.value(), 1);
     }
 
+    @PostMapping("/api/board/update")
+    public ResponseDto update(@RequestBody Board board) {
+        boardService.update(board);
+        return new ResponseDto(HttpStatus.OK.value(), 1);
+    }
+
 }

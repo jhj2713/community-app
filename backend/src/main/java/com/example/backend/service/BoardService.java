@@ -26,4 +26,13 @@ public class BoardService {
         boardRepository.save(board);
     }
 
+    @Transactional
+    public void update(Board board) {
+        Board findBoard = boardRepository.findById(board.getId())
+                .orElseGet(() -> { return new Board(); });
+        findBoard.setTitle(board.getTitle());
+        findBoard.setContent(board.getContent());
+        findBoard.setDate(LocalDateTime.now());
+    }
+
 }
