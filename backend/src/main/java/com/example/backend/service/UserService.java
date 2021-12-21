@@ -16,7 +16,7 @@ public class UserService {
     public void signup(User user) { userRepository.save(user); }
 
     @Transactional
-    public User doublecheck(String userId) {
+    public User doubleCheck(String userId) {
         return userRepository.findByUserId(userId)
                 .orElseGet(() -> { return new User(); });
     }
@@ -28,9 +28,12 @@ public class UserService {
     }
 
     @Transactional
-    public User update(User user) {
-        return userRepository.findById(user.getId())
+    public void update(User user) {
+        User findUser = userRepository.findById(user.getId())
                 .orElseGet(() -> { return new User(); });
+        findUser.setUserId(user.getUserId());
+        findUser.setUsername(user.getUsername());
+        findUser.setPassword(user.getPassword());
     }
 
 }

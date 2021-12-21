@@ -20,10 +20,9 @@ public class UserController {
         return new ResponseDto(HttpStatus.OK.value(), 1);
     }
 
-    @PostMapping("/api/user/doublecheck")
-    public ResponseDto doublecheck(@RequestBody String userId) {
-        User findUser = userService.doublecheck(userId);
-        System.out.println(findUser);
+    @GetMapping("/api/user/doublecheck/{userId}")
+    public ResponseDto doubleCheck(@PathVariable String userId) {
+        User findUser = userService.doubleCheck(userId);
         if (findUser.getUserId() == null) {
             return new ResponseDto(HttpStatus.OK.value(), 0);
         } else {
@@ -43,10 +42,7 @@ public class UserController {
 
     @PostMapping("/api/user/update")
     public ResponseDto update(@RequestBody User user) {
-        User findUser = userService.update(user);
-        findUser.setUserId(user.getUserId());
-        findUser.setUsername(user.getUsername());
-        findUser.setPassword(user.getPassword());
+        userService.update(user);
         return new ResponseDto(HttpStatus.OK.value(), 1);
     }
 
