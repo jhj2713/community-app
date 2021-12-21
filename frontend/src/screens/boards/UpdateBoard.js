@@ -33,10 +33,9 @@ const ErrorText = styled.Text`
 `;
 
 const UpdateBoard = ({ navigation, route }) => {
-  const { routeName } = route.params;
-  const [board, setBoard] = useState({});
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const { routeName, board } = route.params;
+  const [title, setTitle] = useState(board.title);
+  const [content, setContent] = useState(board.content);
   const [errorText, setErrorText] = useState("");
 
   const contentRef = useRef();
@@ -47,17 +46,30 @@ const UpdateBoard = ({ navigation, route }) => {
     } else {
       setErrorText("");
       axios
-        .post("http://10.0.2.2:8000/api/board/update", board)
+        .post("http://10.0.2.2:8000/api/board/update", {
+          title,
+          content,
+        })
         .then((res) => {
           if (routeName === "Free") {
-            navigation.replace("FreeBoardDetail", { routeName: "Free" });
+            navigation.replace("FreeBoardDetail", {
+              routeName: "Free",
+              board: res.data.data,
+            });
           } else if (routeName === "Ano") {
-            navigation.replace("AnoBoardDetail", { routeName: "Ano" });
+            navigation.replace("AnoBoardDetail", {
+              routeName: "Ano",
+              board: res.data.data,
+            });
           } else if (routeName === "Main") {
-            navigation.replace("MainBoardDetail", { routeName: "Main" });
+            navigation.replace("MainBoardDetail", {
+              routeName: "Main",
+              board: res.data.data,
+            });
           } else {
             navigation.replace("GroupBoardDetail", {
               routeName,
+              board: res.data.data,
             });
           }
         })

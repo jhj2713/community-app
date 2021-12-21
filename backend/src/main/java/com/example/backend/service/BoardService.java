@@ -30,12 +30,18 @@ public class BoardService {
     }
 
     @Transactional
-    public void update(Board board) {
+    public Board update(Board board) {
         Board findBoard = boardRepository.findById(board.getId())
                 .orElseGet(() -> { return new Board(); });
         findBoard.setTitle(board.getTitle());
         findBoard.setContent(board.getContent());
         findBoard.setDate(LocalDateTime.now());
+        return findBoard;
+    }
+
+    @Transactional
+    public void delete(Board board) {
+        boardRepository.deleteById(board.getId());
     }
 
     @Transactional

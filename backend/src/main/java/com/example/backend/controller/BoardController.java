@@ -26,7 +26,12 @@ public class BoardController {
 
     @PostMapping("/api/board/update")
     public ResponseDto update(@RequestBody Board board) {
-        boardService.update(board);
+        return new ResponseDto(HttpStatus.OK.value(), boardService.update(board));
+    }
+
+    @PostMapping("/api/board/delete")
+    public ResponseDto delete(@RequestBody Board board) {
+        boardService.delete(board);
         return new ResponseDto(HttpStatus.OK.value(), 1);
     }
 

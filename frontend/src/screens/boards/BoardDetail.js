@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 import { Button } from "../../components";
+import axios from "axios";
 
 const Container = styled.View`
   flex: 1;
@@ -90,27 +91,35 @@ const BoardDetail = ({ navigation, route }) => {
 
   const _handleUpdateButtonPress = () => {
     if (routeName === "Free") {
-      navigation.navigate("UpdateFreeBoard", { routeName });
+      navigation.navigate("UpdateFreeBoard", { routeName, board });
     } else if (routeName === "Ano") {
-      navigation.navigate("UpdateAnoBoard", { routeName });
+      navigation.navigate("UpdateAnoBoard", { routeName, board });
     } else if (routeName === "Main") {
-      navigation.navigate("UpdateMainBoard", { routeName });
+      navigation.navigate("UpdateMainBoard", { routeName, board });
     } else {
       navigation.navigate("UpdateGroupBoard", {
         routeName,
+        board,
       });
     }
   };
   const _handleDeleteButtonPress = () => {
-    if (routeName === "Free") {
-      navigation.navigate("FreeBoard");
-    } else if (routeName === "Ano") {
-      navigation.navigate("AnoBoard");
-    } else if (routeName === "Main") {
-      navigation.navigate("MainBoard");
-    } else {
-      navigation.navigate(routeName, { routeName });
-    }
+    axios
+      .post("http://10.0.2.2:8000/api/board/delete", board)
+      .then((res) => {
+        if (routeName === "Free") {
+          navigation.navigate("FreeBoard");
+        } else if (routeName === "Ano") {
+          navigation.navigate("AnoBoard");
+        } else if (routeName === "Main") {
+          navigation.navigate("MainBoard");
+        } else {
+          navigation.navigate(routeName, { routeName });
+        }
+      })
+      .catch((err) => {
+        Alert.alert(err.message);
+      });
   };
 
   useEffect(() => {
