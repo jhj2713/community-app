@@ -1,13 +1,13 @@
 import React, { useState, createContext } from "react";
 
 const UserContext = createContext({
-  user: { name: null, uid: null },
+  user: { username: null, id: null },
 });
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const dispatch = ({ userId, name, password, uid }) => {
-    setUser({ userId, name, password, uid });
+  const dispatch = ({ userId, username, password, id }) => {
+    setUser({ userId, username, password, id });
   };
   const value = { user, dispatch };
 

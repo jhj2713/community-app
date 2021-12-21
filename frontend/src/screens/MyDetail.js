@@ -26,7 +26,7 @@ const UserDetail = () => {
   const { user, dispatch } = useContext(UserContext);
   const { uid } = user;
   const [userId, setUserId] = useState(user.userId);
-  const [name, setName] = useState(user.name);
+  const [username, setUsername] = useState(user.username);
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -55,14 +55,16 @@ const UserDetail = () => {
     } else {
       didMountRef.current = true;
     }
-  }, [name, userId, password, passwordConfirm]);
+  }, [username, userId, password, passwordConfirm]);
   useEffect(() => {
-    setDisabled(!(name && userId && password && passwordConfirm && !errorMsg));
-  }, [name, userId, password, passwordConfirm, errorMsg]);
+    setDisabled(
+      !(username && userId && password && passwordConfirm && !errorMsg),
+    );
+  }, [username, userId, password, passwordConfirm, errorMsg]);
 
   const _handleUpdateButtonPress = () => {
     Alert.alert("수정 완료");
-    dispatch({ userId, name, password, uid });
+    dispatch({ userId, username, password, uid });
     setPassword("");
     setPasswordConfirm("");
   };
@@ -83,10 +85,10 @@ const UserDetail = () => {
         <Input
           ref={nameRef}
           label="Name"
-          value={name}
-          onChangeText={(text) => setName(text)}
+          value={username}
+          onChangeText={(text) => setUsername(text)}
           onSubmitEditing={() => passwordRef.current.focus()}
-          onBlur={() => setName(name.trim())}
+          onBlur={() => setUsername(username.trim())}
           placeholder="Name"
           returnKeyType="next"
         />

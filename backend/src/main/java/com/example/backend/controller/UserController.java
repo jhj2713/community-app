@@ -20,4 +20,25 @@ public class UserController {
         return new ResponseDto(HttpStatus.OK.value(), 1);
     }
 
+    @PostMapping("/api/user/doublecheck")
+    public ResponseDto doublecheck(@RequestBody String userId) {
+        User findUser = userService.doublecheck(userId);
+        System.out.println(findUser);
+        if (findUser.getUserId() == null) {
+            return new ResponseDto(HttpStatus.OK.value(), 0);
+        } else {
+            return new ResponseDto(HttpStatus.OK.value(), findUser);
+        }
+    }
+
+    @PostMapping("/api/user/login")
+    public ResponseDto login(@RequestBody User user) {
+        User findUser = userService.login(user);
+        if (findUser.getUserId() == null) {
+            return new ResponseDto(HttpStatus.OK.value(), 0);
+        } else {
+            return new ResponseDto(HttpStatus.OK.value(), findUser);
+        }
+    }
+
 }

@@ -4,6 +4,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Input, Button } from "../components";
 import { UserContext } from "../contexts";
+import axios from "axios";
+import { Alert } from "react-native";
 
 const Container = styled.View`
   flex: 1;
@@ -38,9 +40,20 @@ const Login = ({ navigation }) => {
   const _handlePwdChange = (password) => {
     setPassword(password);
   };
-  const _handleLoginButtonPress = () => {
-    const user = { uid: 1, userId, name: "이름", password };
-    dispatch(user);
+  const _handleLoginButtonPress = async () => {
+    axios
+      .post("http://10.0.2.2:8000/api/user/login", { userId, password })
+      .then((res) => {
+        if (res.data.data == 0) {
+          Alert.alert("로그인 정보가 틀렸습니다");
+        } else {
+          const user = res.data.data;
+          dispatch(user);
+        }
+      })
+      .catch((err) => {
+        Alert.alert(err.message);
+      });
   };
 
   return (

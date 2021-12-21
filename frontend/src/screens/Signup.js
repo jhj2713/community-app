@@ -39,6 +39,7 @@ const Signup = ({ navigation }) => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
   const IdRef = useRef();
   const passwordRef = useRef();
@@ -52,6 +53,8 @@ const Signup = ({ navigation }) => {
         _errorMsg = "Please enter yout name";
       } else if (!user.userId) {
         _errorMsg = "Please enter your id";
+      } else if (!isChecked) {
+        _errorMsg = "Please double check id";
       } else if (user.password.length < 6) {
         _errorMsg = "Password must contain 6 character at least";
       } else if (user.password !== passwordConfirm) {
@@ -71,6 +74,7 @@ const Signup = ({ navigation }) => {
         user.userId &&
         user.password &&
         passwordConfirm &&
+        isChecked &&
         !errorMsg
       ),
     );
@@ -87,7 +91,24 @@ const Signup = ({ navigation }) => {
         Alert.alert(err.message);
       });
   };
-  const _handleDoubleCheck = () => {};
+  const _handleDoubleCheck = () => {
+    axios
+      .post("http://10.0.2.2:8000/api/user/doublecheck", {
+        userId: user.userId,
+      })
+      .then((res) => {
+        if (res.data.data === 0) {
+          Alert.alert("사용 가능한 아이디입니다");
+          setIsChecked(true);
+        } else {
+          Alert.alert("이미 사용중인 아이디입니다");
+          setIsChecked(false);
+        }
+      })
+      .catch((err) => {
+        Alert.alert(err.message);
+      });
+  };
 
   return (
     <KeyboardAwareScrollView extraScrollHeight={20}>

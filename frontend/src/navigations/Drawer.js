@@ -16,7 +16,7 @@ const Drawer = () => {
   return (
     <DrawerNavigator.Navigator initialRouteName="메인화면">
       <DrawerNavigator.Screen
-        name={user.name}
+        name={user.username}
         component={MyDetail}
         options={{
           drawerIcon: () => (

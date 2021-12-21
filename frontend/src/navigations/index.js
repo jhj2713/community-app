@@ -9,7 +9,7 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      {user?.uid && user?.name ? <Drawer /> : <AuthStack />}
+      {user?.id && user?.username ? <Drawer /> : <AuthStack />}
     </NavigationContainer>
   );
 };
