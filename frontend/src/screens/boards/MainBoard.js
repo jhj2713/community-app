@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Button, SearchInput, Pagination } from "../../components";
+import React, { useState, useEffect } from "react";
+import { SearchInput, Pagination } from "../../components";
 import styled from "styled-components";
 import { Alert, FlatList } from "react-native";
+import axios from "axios";
 
 const Container = styled.View`
   flex: 1;
@@ -32,15 +33,7 @@ const BoardUser = styled.Text`
 const MainBoard = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [titles, setTitles] = useState([
-    { id: 1, name: "제목1", user: "user" },
-    { id: 2, name: "제목2", user: "user" },
-    { id: 3, name: "제목3", user: "user" },
-    { id: 4, name: "제목4", user: "user" },
-    { id: 5, name: "제목5", user: "user" },
-    { id: 6, name: "제목6", user: "user" },
-    { id: 7, name: "제목7", user: "user" },
-  ]);
+  const [boards, setBoards] = useState([]);
 
   const _handleSearchBtnPress = () => {
     Alert.alert("검색");
@@ -60,11 +53,26 @@ const MainBoard = ({ navigation }) => {
           navigation.navigate("MainBoardDetail", { routeName: "Main" });
         }}
       >
-        <BoardTitle>{item.name}</BoardTitle>
-        <BoardUser>{item.user}</BoardUser>
+        <BoardTitle>{item.title}</BoardTitle>
+        <BoardUser>유저명</BoardUser>
       </BoardBox>
     );
   };
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://10.0.2.2:8000/api/board/mainboards?page=${
+          pageNumber - 1
+        }&size=7&sort=id,DESC`,
+      )
+      .then((res) => {
+        setBoards(res.data.data.content);
+      })
+      .catch((err) => {
+        Alert.alert(err.messsage);
+      });
+  }, [pageNumber]);
 
   return (
     <Container>
@@ -74,7 +82,7 @@ const MainBoard = ({ navigation }) => {
         onPress={_handleSearchBtnPress}
       />
       <BoardsContainer>
-        <FlatList data={titles} renderItem={ItemView} />
+        <FlatList data={boards} renderItem={ItemView} />
       </BoardsContainer>
       <Pagination
         lastPage={10}
