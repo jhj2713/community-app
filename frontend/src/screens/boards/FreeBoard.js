@@ -38,6 +38,7 @@ const BoardUser = styled.Text`
 const FreeBoard = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
   const [boards, setBoards] = useState([]);
 
   const _handleSearchBtnPress = () => {
@@ -55,7 +56,10 @@ const FreeBoard = ({ navigation }) => {
       <BoardBox
         key={item.id}
         onPress={() => {
-          navigation.navigate("FreeBoardDetail", { routeName: "Free" });
+          navigation.navigate("FreeBoardDetail", {
+            routeName: "Free",
+            board: item,
+          });
         }}
       >
         <BoardTitle>{item.title}</BoardTitle>
@@ -72,7 +76,9 @@ const FreeBoard = ({ navigation }) => {
         }&size=7&sort=id,DESC`,
       )
       .then((res) => {
-        setBoards(res.data.data.content);
+        const data = res.data.data;
+        setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+        setBoards(data.content);
       })
       .catch((err) => {
         Alert.alert(err.messsage);
@@ -90,7 +96,7 @@ const FreeBoard = ({ navigation }) => {
         <FlatList data={boards} renderItem={ItemView} />
       </BoardsContainer>
       <Pagination
-        lastPage={10}
+        lastPage={lastPage}
         pageNumber={pageNumber}
         prevButtonPress={_handlePrevButtonPress}
         nextButtonPress={_handleNextButtonPress}

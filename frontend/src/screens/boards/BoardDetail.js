@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FlatList } from "react-native";
 import { Button } from "../../components";
@@ -59,7 +59,8 @@ const CommentContent = styled.Text`
 const CommentUser = styled.TouchableOpacity``;
 
 const BoardDetail = ({ navigation, route }) => {
-  const { routeName } = route.params;
+  const { routeName, board } = route.params;
+  const [boardTitle, setBoardTitle] = useState("");
   const [comments, setComments] = useState([
     { id: 1, content: "댓글댓글1", user: "user1" },
     { id: 2, content: "댓글댓글2", user: "user2" },
@@ -74,7 +75,7 @@ const BoardDetail = ({ navigation, route }) => {
     return (
       <Comment>
         <CommentContent>{item.content}</CommentContent>
-        {routeName === "Ano" || (
+        {routeName === "Ano" || board.boardId === 1 || (
           <CommentUser
             onPress={() => {
               navigation.navigate("OtherUserDetail");
@@ -112,13 +113,23 @@ const BoardDetail = ({ navigation, route }) => {
     }
   };
 
+  useEffect(() => {
+    if (board.boardId === 1) {
+      setBoardTitle("익명게시판");
+    } else if (board.boardId === 2) {
+      setBoardTitle("자유게시판");
+    } else {
+      setBoardTitle("그룹게시판");
+    }
+  }, []);
+
   return (
     <Container>
-      {routeName === "Main" && <CategoryText>자유게시판</CategoryText>}
+      {routeName === "Main" && <CategoryText>{boardTitle}</CategoryText>}
       <Board>
         <BoardHeader>
-          <Title>제목</Title>
-          {routeName === "Ano" || (
+          <Title>{board.title}</Title>
+          {routeName === "Ano" || board.boardId === 1 || (
             <BoardUser
               onPress={() => {
                 navigation.navigate("OtherUserDetail");
@@ -128,7 +139,7 @@ const BoardDetail = ({ navigation, route }) => {
             </BoardUser>
           )}
         </BoardHeader>
-        <Content>내용내용</Content>
+        <Content>{board.content}</Content>
       </Board>
       <CommentContainer>
         <FlatList data={comments} renderItem={ItemView} />

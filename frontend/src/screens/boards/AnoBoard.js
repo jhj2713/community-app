@@ -34,6 +34,7 @@ const BoardTitle = styled.Text`
 const AnoBoard = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
   const [boards, setBoards] = useState([]);
 
   const _handleSearchBtnPress = () => {
@@ -51,7 +52,10 @@ const AnoBoard = ({ navigation }) => {
       <BoardBox
         key={item.id}
         onPress={() => {
-          navigation.navigate("AnoBoardDetail", { routeName: "Ano" });
+          navigation.navigate("AnoBoardDetail", {
+            routeName: "Ano",
+            board: item,
+          });
         }}
       >
         <BoardTitle>{item.title}</BoardTitle>
@@ -67,7 +71,9 @@ const AnoBoard = ({ navigation }) => {
         }&size=7&sort=id,DESC`,
       )
       .then((res) => {
-        setBoards(res.data.data.content);
+        const data = res.data.data;
+        setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+        setBoards(data.content);
       })
       .catch((err) => {
         Alert.alert(err.messsage);
@@ -85,7 +91,7 @@ const AnoBoard = ({ navigation }) => {
         <FlatList data={boards} renderItem={ItemView} />
       </BoardsContainer>
       <Pagination
-        lastPage={10}
+        lastPage={lastPage}
         pageNumber={pageNumber}
         prevButtonPress={_handlePrevButtonPress}
         nextButtonPress={_handleNextButtonPress}
