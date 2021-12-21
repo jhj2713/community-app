@@ -44,13 +44,28 @@ public class BoardService {
     }
 
     @Transactional
+    public Page<Board> searchMainBoards(Pageable pageable, String search) {
+        return boardRepository.findByTitleContaining(search, pageable);
+    }
+
+    @Transactional
     public Page<Board> freeBoards(Pageable pageable) {
         return boardRepository.findAllByBoardId(2, pageable);
     }
 
     @Transactional
+    public Page<Board> searchFreeBoards(Pageable pageable, String search) {
+        return  boardRepository.findByBoardIdAndTitleContaining(2, search, pageable);
+    }
+
+    @Transactional
     public Page<Board> anoBoards(Pageable pageable) {
         return boardRepository.findAllByBoardId(1, pageable);
+    }
+
+    @Transactional
+    public Page<Board> searchAnoBoards(Pageable pageable, String search) {
+        return  boardRepository.findByBoardIdAndTitleContaining(1, search, pageable);
     }
 
 }

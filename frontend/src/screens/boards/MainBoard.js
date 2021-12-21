@@ -37,7 +37,37 @@ const MainBoard = ({ navigation }) => {
   const [boards, setBoards] = useState([]);
 
   const _handleSearchBtnPress = () => {
-    Alert.alert("검색");
+    if (searchText === "") {
+      axios
+        .get(
+          `http://10.0.2.2:8000/api/board/mainboards?page=${
+            pageNumber - 1
+          }&size=7&sort=id,DESC`,
+        )
+        .then((res) => {
+          const data = res.data.data;
+          setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+          setBoards(data.content);
+        })
+        .catch((err) => {
+          Alert.alert(err.messsage);
+        });
+    } else {
+      axios
+        .get(
+          `http://10.0.2.2:8000/api/board/mainboard/${searchText}?page=${
+            pageNumber - 1
+          }&size=7&sort=id,DESC`,
+        )
+        .then((res) => {
+          const data = res.data.data;
+          setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+          setBoards(data.content);
+        })
+        .catch((err) => {
+          Alert.alert(err.message);
+        });
+    }
   };
   const _handlePrevButtonPress = () => {
     setPageNumber((num) => setPageNumber(num - 1));

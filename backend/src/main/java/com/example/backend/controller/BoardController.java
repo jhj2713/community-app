@@ -35,14 +35,29 @@ public class BoardController {
         return new ResponseDto(HttpStatus.OK.value(), boardService.mainBoards(pageable));
     }
 
+    @GetMapping("/api/board/mainboard/{search}")
+    public ResponseDto searchMainBoards(Pageable pageable, @PathVariable String search) {
+        return new ResponseDto(HttpStatus.OK.value(), boardService.searchMainBoards(pageable, search));
+    }
+
     @GetMapping("/api/board/freeboards")
     public ResponseDto freeBoards(Pageable pageable) {
         return new ResponseDto(HttpStatus.OK.value(), boardService.freeBoards(pageable));
     }
 
+    @GetMapping("/api/board/freeboard/{search}")
+    public ResponseDto searchFreeBoards(Pageable pageable, @PathVariable String search) {
+        return new ResponseDto(HttpStatus.OK.value(), boardService.searchFreeBoards(pageable, search));
+    }
+
     @GetMapping("/api/board/anoboards")
     public ResponseDto anoBoards(Pageable pageable) {
         return new ResponseDto(HttpStatus.OK.value(), boardService.anoBoards(pageable));
+    }
+
+    @GetMapping("/api/board/anoboard/{search}")
+    public ResponseDto searchAnoBoards(Pageable pageable, @PathVariable String search) {
+        return new ResponseDto(HttpStatus.OK.value(), boardService.searchAnoBoards(pageable, search));
     }
 
 }
