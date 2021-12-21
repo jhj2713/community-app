@@ -47,8 +47,11 @@ const GroupSelect = ({ navigation }) => {
   }, []);
   useEffect(() => {
     setLastPage(Math.floor((groups.length - 1) / 7) + 1);
-    setShowGroup(groups);
+    setShowGroup(groups.slice(7 * (pageNumber - 1), 7 * pageNumber));
   }, [groups]);
+  useEffect(() => {
+    setShowGroup(groups.slice(7 * (pageNumber - 1), 7 * pageNumber));
+  }, [pageNumber]);
 
   const ItemView = ({ item }) => {
     return (

@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.ResponseDto.ResponseDto;
+import com.example.backend.model.Category;
 import com.example.backend.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,11 @@ public class CategoryController {
     @GetMapping("/api/categories")
     public ResponseDto loadCategory() {
         return new ResponseDto(HttpStatus.OK.value(), categoryService.loadCategory());
+    }
+
+    @PostMapping("/api/saveCategory")
+    public ResponseDto saveCategory(@RequestBody Category category) {
+        return new ResponseDto(HttpStatus.OK.value(), categoryService.saveCategory(category));
     }
 
 }

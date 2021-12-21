@@ -61,7 +61,7 @@ const GroupBoard = ({ route, navigation }) => {
     } else {
       axios
         .get(
-          `http://10.0.2.2:8000/api/board/groupboard/${searchText}?page=${
+          `http://10.0.2.2:8000/api/board/groupboard/${category}/${searchText}?page=${
             pageNumber - 1
           }&size=7&sort=id,DESC`,
         )
