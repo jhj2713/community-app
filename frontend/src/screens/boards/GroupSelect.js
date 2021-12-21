@@ -50,6 +50,7 @@ const GroupSelect = ({ navigation }) => {
         onPress={() =>
           navigation.navigate(item.name, {
             routeName: item.name,
+            category: item.id,
           })
         }
         onLongPress={() =>

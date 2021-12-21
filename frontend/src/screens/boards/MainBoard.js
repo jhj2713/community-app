@@ -20,11 +20,6 @@ const BoardBox = styled.TouchableOpacity`
   border-bottom-width: 1px;
   border-bottom-color: ${({ theme }) => theme.borderBottom};
 `;
-const ButtonBox = styled.View`
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-`;
 const BoardTitle = styled.Text`
   font-size: 20px;
   padding: 20px 15px;
@@ -87,15 +82,6 @@ const MainBoard = ({ navigation }) => {
         prevButtonPress={_handlePrevButtonPress}
         nextButtonPress={_handleNextButtonPress}
       />
-      <ButtonBox>
-        <Button
-          title="+"
-          onPress={() => {
-            navigation.navigate("WriteMainBoard", { routeName: "MainBoard" });
-          }}
-          isRound
-        />
-      </ButtonBox>
     </Container>
   );
 };

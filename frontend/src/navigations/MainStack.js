@@ -15,7 +15,6 @@ const MainStack = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainBoard" component={MainBoard} />
       <Stack.Screen name="MainBoardDetail" component={BoardDetail} />
-      <Stack.Screen name="WriteMainBoard" component={WriteBoard} />
       <Stack.Screen name="UpdateMainBoard" component={UpdateBoard} />
       <Stack.Screen name="OtherUserDetail" component={OtherUserDetail} />
     </Stack.Navigator>

@@ -35,7 +35,7 @@ const BoardUser = styled.Text`
 `;
 
 const GroupBoard = ({ route, navigation }) => {
-  const { routeName } = route.params;
+  const { routeName, category } = route.params;
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [titles, setTitles] = useState([
@@ -89,6 +89,7 @@ const GroupBoard = ({ route, navigation }) => {
           onPress={() => {
             navigation.navigate("WriteGroupBoard", {
               routeName,
+              category,
             });
           }}
           isRound

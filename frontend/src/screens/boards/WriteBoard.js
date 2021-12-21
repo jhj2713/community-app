@@ -1,7 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Input, Button } from "../../components";
+import { Alert } from "react-native";
+import axios from "axios";
 
 const Container = styled.View`
   flex: 1;
@@ -25,23 +27,43 @@ const WriteBoard = ({ route, navigation }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [errorText, setErrorText] = useState("");
+  const [boardId, setBoardId] = useState("");
 
   const contentRef = useRef();
 
-  const _handleSubmitButtonPress = () => {
+  useEffect(() => {
+    if (routeName == "AnoBoard") {
+      setBoardId(1);
+    } else if (routeName == "FreeBoard") {
+      setBoardId(2);
+    } else {
+      setBoardId(2 + route.params.category);
+    }
+  }, []);
+
+  const _handleSubmitButtonPress = async () => {
     if (title == "" || content == "") {
       setErrorText("Please enter content");
     } else {
       setErrorText("");
-      if (
-        routeName == "AnoBoard" ||
-        routeName == "FreeBoard" ||
-        routeName == "MainBoard"
-      ) {
-        navigation.replace(routeName);
-      } else {
-        navigation.replace(routeName, { routeName });
-      }
+      axios
+        .post("http://10.0.2.2:8000/api/board/save/" + boardId, {
+          title,
+          content,
+        })
+        .then((res) => {
+          if (boardId > 2) {
+            navigation.replace(routeName, {
+              routeName,
+              category: route.params.category,
+            });
+          } else {
+            navigation.replace(routeName);
+          }
+        })
+        .catch((err) => {
+          Alert.alert(err.message);
+        });
     }
   };
 
