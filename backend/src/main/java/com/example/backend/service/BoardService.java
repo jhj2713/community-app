@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardService {
@@ -43,7 +44,7 @@ public class BoardService {
 
     @Transactional
     public List<Board> loadBoards(User user) {
-        return boardRepository.findAllByUserId(user.getId());
+        return boardRepository.findAllByUserId(user.getId()).stream().filter(board -> board.getBoardId() != 1).collect(Collectors.toList());
     }
 
     @Transactional

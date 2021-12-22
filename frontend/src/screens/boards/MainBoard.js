@@ -46,7 +46,11 @@ const MainBoard = ({ navigation }) => {
         )
         .then((res) => {
           const data = res.data.data;
-          setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+          if (data.totalElements == 0) {
+            setLastPage(1);
+          } else {
+            setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+          }
           setBoards(data.content);
         })
         .catch((err) => {
@@ -61,7 +65,11 @@ const MainBoard = ({ navigation }) => {
         )
         .then((res) => {
           const data = res.data.data;
-          setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+          if (data.totalElements == 0) {
+            setLastPage(1);
+          } else {
+            setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+          }
           setBoards(data.content);
         })
         .catch((err) => {
