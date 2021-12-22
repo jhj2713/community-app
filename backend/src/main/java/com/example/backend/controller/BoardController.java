@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.ResponseDto.ResponseDto;
 import com.example.backend.model.Board;
 import com.example.backend.model.BoardAndUser;
+import com.example.backend.model.User;
 import com.example.backend.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,11 @@ public class BoardController {
     @PostMapping("/api/board/update")
     public ResponseDto update(@RequestBody Board board) {
         return new ResponseDto(HttpStatus.OK.value(), boardService.update(board));
+    }
+
+    @PostMapping("/api/board/loadBoards")
+    public ResponseDto loadBoards(@RequestBody User user) {
+        return new ResponseDto(HttpStatus.OK.value(), boardService.loadBoards(user));
     }
 
     @PostMapping("/api/board/delete")

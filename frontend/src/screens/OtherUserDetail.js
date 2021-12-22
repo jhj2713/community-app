@@ -1,7 +1,8 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components";
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
+import axios from "axios";
 
 const Container = styled.View`
   height: 100%;
@@ -16,11 +17,6 @@ const UserBox = styled.View`
 `;
 const StyledText = styled.Text`
   font-size: 20px;
-`;
-const MessageBox = styled.TouchableOpacity`
-  position: absolute;
-  right: 10px;
-  top: 10px;
 `;
 const BoardsContainer = styled.View`
   flex: 1;
@@ -38,19 +34,9 @@ const BoardTitle = styled.Text`
   padding: 20px 15px;
 `;
 
-const OtherUserDetail = ({ navigation }) => {
-  const [user, setUser] = useState({ userId: "user", name: "name" });
-  const [writeList, setWriteList] = useState([
-    { id: 1, title: "제목1" },
-    { id: 2, title: "제목2" },
-    { id: 3, title: "제목3" },
-    { id: 4, title: "제목4" },
-    { id: 5, title: "제목5" },
-    { id: 6, title: "제목6" },
-    { id: 7, title: "제목7" },
-    { id: 8, title: "제목7" },
-    { id: 9, title: "제목7" },
-  ]);
+const OtherUserDetail = ({ navigation, route }) => {
+  const { user } = route.params;
+  const [writeList, setWriteList] = useState([]);
 
   const ItemView = ({ item }) => {
     return (
@@ -67,18 +53,23 @@ const OtherUserDetail = ({ navigation }) => {
       headerTitle: "",
     });
   });
-
-  const _handleChattingButtonPress = () => {};
+  useEffect(() => {
+    axios
+      .post("http://10.0.2.2:8000/api/board/loadBoards", user)
+      .then((res) => {
+        setWriteList(res.data.data);
+      })
+      .catch((err) => {
+        Alert.alert(err.message);
+      });
+  }, []);
 
   return (
     <Container>
       <UserBox>
-        <MessageBox onPress={_handleChattingButtonPress}>
-          <AntDesign name="message1" size={24} color="black" />
-        </MessageBox>
         <AntDesign name="user" size={50} />
         <StyledText>{user.userId}</StyledText>
-        <StyledText>{user.name}</StyledText>
+        <StyledText>{user.username}</StyledText>
       </UserBox>
       <BoardsContainer>
         <FlatList data={writeList} renderItem={ItemView} />

@@ -9,8 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class BoardService {
@@ -39,6 +39,11 @@ public class BoardService {
         findBoard.setContent(board.getContent());
         findBoard.setDate(LocalDateTime.now());
         return findBoard;
+    }
+
+    @Transactional
+    public List<Board> loadBoards(User user) {
+        return boardRepository.findAllByUserId(user.getId());
     }
 
     @Transactional
