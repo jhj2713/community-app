@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Alert, FlatList } from "react-native";
-import { Button } from "../../components";
+import { Button, Input } from "../../components";
+import { UserContext } from "../../contexts";
 import axios from "axios";
 
 const Container = styled.View`
@@ -57,20 +58,27 @@ const Comment = styled.View`
 const CommentContent = styled.Text`
   font-size: 20px;
 `;
+const CommentInputBox = styled.View`
+  width: 300px;
+  margin: -10px 20px;
+`;
+const CommentBox = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+const CommentButtonBox = styled.View`
+  margin: 25px 20px 0 0;
+`;
 const CommentUser = styled.TouchableOpacity``;
 
 const BoardDetail = ({ navigation, route }) => {
   const { routeName, board } = route.params;
   const [boardTitle, setBoardTitle] = useState("");
-  const [comments, setComments] = useState([
-    { id: 1, content: "댓글댓글1", user: "user1" },
-    { id: 2, content: "댓글댓글2", user: "user2" },
-    { id: 3, content: "댓글댓글3", user: "user3" },
-    { id: 4, content: "댓글댓글4", user: "user4" },
-    { id: 5, content: "댓글댓글5", user: "user5" },
-    { id: 6, content: "댓글댓글6", user: "user6" },
-    { id: 7, content: "댓글댓글7", user: "user7" },
-  ]);
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+
+  const { user } = useContext(UserContext);
 
   const ItemView = ({ item }) => {
     return (
@@ -79,10 +87,10 @@ const BoardDetail = ({ navigation, route }) => {
         {routeName === "Ano" || board.boardId === 1 || (
           <CommentUser
             onPress={() => {
-              navigation.navigate("OtherUserDetail");
+              navigation.navigate("OtherUserDetail", { user: item.user });
             }}
           >
-            <UserName>{item.user}</UserName>
+            <UserName>{item.user.username}</UserName>
           </CommentUser>
         )}
       </Comment>
@@ -121,8 +129,31 @@ const BoardDetail = ({ navigation, route }) => {
         Alert.alert(err.message);
       });
   };
+  const _handleCommentButtonPress = () => {
+    axios
+      .post("http://10.0.2.2:8000/api/comment/save", { comment, board, user })
+      .then((res) => {
+        setComment("");
+        _loadComments();
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  const _loadComments = () => {
+    axios
+      .get("http://10.0.2.2:8000/api/comment/load/" + board.id)
+      .then((res) => {
+        setComments(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
 
   useEffect(() => {
+    _loadComments();
     if (board.boardId === 1) {
       setBoardTitle("익명게시판");
     } else if (board.boardId === 2) {
@@ -151,6 +182,27 @@ const BoardDetail = ({ navigation, route }) => {
         <Content>{board.content}</Content>
       </Board>
       <CommentContainer>
+        <CommentBox>
+          <CommentInputBox>
+            <Input
+              label=""
+              value={comment}
+              onChangeText={(text) => setComment(text)}
+              onSubmitEditing={() => {
+                setComment(comment.trim());
+              }}
+              placeholder="Comment"
+              returnKeyType="next"
+            />
+          </CommentInputBox>
+          <CommentButtonBox>
+            <Button
+              title="제출"
+              onPress={_handleCommentButtonPress}
+              isFilled={false}
+            />
+          </CommentButtonBox>
+        </CommentBox>
         <FlatList data={comments} renderItem={ItemView} />
       </CommentContainer>
       <ButtonContainer>

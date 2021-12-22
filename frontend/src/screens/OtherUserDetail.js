@@ -40,10 +40,7 @@ const OtherUserDetail = ({ navigation, route }) => {
 
   const ItemView = ({ item }) => {
     return (
-      <BoardBox
-        key={item.id}
-        onPress={() => navigation.navigate("FreeBoard", { name: "Free" })}
-      >
+      <BoardBox key={item.id}>
         <BoardTitle>{item.title}</BoardTitle>
       </BoardBox>
     );
