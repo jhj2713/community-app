@@ -103,7 +103,7 @@ const MainBoard = ({ navigation }) => {
           }}
         >
           <BoardTitle>{item.title}</BoardTitle>
-          <BoardUser>유저명</BoardUser>
+          <BoardUser>{item.user.username}</BoardUser>
         </BoardBox>
       );
     }

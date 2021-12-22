@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Input, Button } from "../../components";
+import { UserContext } from "../../contexts";
 import { Alert } from "react-native";
 import axios from "axios";
 
@@ -29,6 +30,8 @@ const WriteBoard = ({ route, navigation }) => {
   const [errorText, setErrorText] = useState("");
   const [boardId, setBoardId] = useState("");
 
+  const { user } = useContext(UserContext);
+
   const contentRef = useRef();
 
   useEffect(() => {
@@ -48,8 +51,11 @@ const WriteBoard = ({ route, navigation }) => {
       setErrorText("");
       axios
         .post("http://10.0.2.2:8000/api/board/save/" + boardId, {
-          title,
-          content,
+          board: {
+            title,
+            content,
+          },
+          user,
         })
         .then((res) => {
           if (boardId > 2) {

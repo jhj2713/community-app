@@ -93,11 +93,14 @@ const FreeBoard = ({ navigation }) => {
         }}
       >
         <BoardTitle>{item.title}</BoardTitle>
-        <BoardUser>유저명</BoardUser>
+        <BoardUser>{item.user.username}</BoardUser>
       </BoardBox>
     );
   };
 
+  useEffect(() => {
+    setPageNumber(1);
+  }, []);
   useEffect(() => {
     axios
       .get(

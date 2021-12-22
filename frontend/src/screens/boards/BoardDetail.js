@@ -123,6 +123,7 @@ const BoardDetail = ({ navigation, route }) => {
   };
 
   useEffect(() => {
+    console.log(board);
     if (board.boardId === 1) {
       setBoardTitle("익명게시판");
     } else if (board.boardId === 2) {
@@ -144,7 +145,7 @@ const BoardDetail = ({ navigation, route }) => {
                 navigation.navigate("OtherUserDetail");
               }}
             >
-              <UserName>user</UserName>
+              <UserName>{board.user.username}</UserName>
             </BoardUser>
           )}
         </BoardHeader>

@@ -47,6 +47,7 @@ const UpdateBoard = ({ navigation, route }) => {
       setErrorText("");
       axios
         .post("http://10.0.2.2:8000/api/board/update", {
+          id: board.id,
           title,
           content,
         })

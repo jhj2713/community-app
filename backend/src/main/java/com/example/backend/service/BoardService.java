@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.model.Board;
+import com.example.backend.model.User;
 import com.example.backend.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ public class BoardService {
     private BoardRepository boardRepository;
 
     @Transactional
-    public void save(Board board, int boardId) {
+    public void save(Board board, User user, int boardId) {
         if (boardId > 2) {
             board.setBoardId(3);
             board.setCategory(boardId - 2);
@@ -26,6 +27,7 @@ public class BoardService {
             board.setBoardId(boardId);
         }
         board.setDate(LocalDateTime.now());
+        board.setUser(user);
         boardRepository.save(board);
     }
 

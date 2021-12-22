@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.ResponseDto.ResponseDto;
 import com.example.backend.model.Board;
+import com.example.backend.model.BoardAndUser;
 import com.example.backend.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,8 +20,8 @@ public class BoardController {
     private BoardService boardService;
 
     @PostMapping("/api/board/save/{boardId}")
-    public ResponseDto save(@RequestBody Board board, @PathVariable int boardId) {
-        boardService.save(board, boardId);
+    public ResponseDto save(@RequestBody BoardAndUser boardAndUser, @PathVariable int boardId) {
+        boardService.save(boardAndUser.board, boardAndUser.user, boardId);
         return new ResponseDto(HttpStatus.OK.value(), 1);
     }
 

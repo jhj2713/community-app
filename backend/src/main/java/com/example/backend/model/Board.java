@@ -36,13 +36,13 @@ public class Board {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime date;
 
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
+
     public Board(String title, String content) {
         this.title = title;
         this.content = content;
     }
-
-    /*@ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;*/
 
 }
