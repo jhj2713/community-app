@@ -21,4 +21,5 @@ export const theme = {
   inputBorder: colors.grey_1,
   label: colors.grey_1,
   text: colors.black,
+  username: colors.blue,
 };

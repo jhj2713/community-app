@@ -27,4 +27,9 @@ public class CommentService {
     public List<Comment> load(long boardId) {
         return commentRepository.findAllByBoardId(boardId);
     }
+
+    @Transactional
+    public void delete(Comment comment) {
+        commentRepository.deleteById(comment.getId());
+    }
 }

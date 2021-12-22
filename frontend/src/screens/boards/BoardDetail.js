@@ -36,6 +36,10 @@ const BoardUser = styled.TouchableOpacity`
   padding: 30px;
 `;
 const UserName = styled.Text`
+  color: ${({ theme }) => theme.username};
+  font-size: 17px;
+`;
+const DeleteButton = styled.Text`
   font-size: 17px;
 `;
 const CategoryText = styled.Text`
@@ -80,21 +84,44 @@ const BoardDetail = ({ navigation, route }) => {
 
   const { user } = useContext(UserContext);
 
+  const _handleDeleteComment = (item) => {
+    axios
+      .post("http://10.0.2.2:8000/api/comment/delete", item)
+      .then((res) => {
+        Alert.alert("댓글이 삭제되었습니다.");
+        _loadComments();
+      })
+      .catch((err) => {
+        Alert.alert(err.message);
+      });
+  };
+
   const ItemView = ({ item }) => {
-    return (
-      <Comment>
-        <CommentContent>{item.content}</CommentContent>
-        {routeName === "Ano" || board.boardId === 1 || (
-          <CommentUser
-            onPress={() => {
-              navigation.navigate("OtherUserDetail", { user: item.user });
-            }}
-          >
-            <UserName>{item.user.username}</UserName>
+    if (item.user.id === user.id) {
+      return (
+        <Comment>
+          <CommentContent>{item.content}</CommentContent>
+          <CommentUser onPress={() => _handleDeleteComment(item)}>
+            <DeleteButton>X</DeleteButton>
           </CommentUser>
-        )}
-      </Comment>
-    );
+        </Comment>
+      );
+    } else {
+      return (
+        <Comment>
+          <CommentContent>{item.content}</CommentContent>
+          {routeName === "Ano" || board.boardId === 1 || (
+            <CommentUser
+              onPress={() => {
+                navigation.navigate("OtherUserDetail", { user: item.user });
+              }}
+            >
+              <UserName>{item.user.username}</UserName>
+            </CommentUser>
+          )}
+        </Comment>
+      );
+    }
   };
 
   const _handleUpdateButtonPress = () => {
@@ -205,18 +232,20 @@ const BoardDetail = ({ navigation, route }) => {
         </CommentBox>
         <FlatList data={comments} renderItem={ItemView} />
       </CommentContainer>
-      <ButtonContainer>
-        <ButtonBox>
-          <Button title="수정" onPress={_handleUpdateButtonPress} />
-        </ButtonBox>
-        <ButtonBox>
-          <Button
-            title="삭제"
-            onPress={_handleDeleteButtonPress}
-            isFilled={false}
-          />
-        </ButtonBox>
-      </ButtonContainer>
+      {board.user.id === user.id && (
+        <ButtonContainer>
+          <ButtonBox>
+            <Button title="수정" onPress={_handleUpdateButtonPress} />
+          </ButtonBox>
+          <ButtonBox>
+            <Button
+              title="삭제"
+              onPress={_handleDeleteButtonPress}
+              isFilled={false}
+            />
+          </ButtonBox>
+        </ButtonContainer>
+      )}
     </Container>
   );
 };

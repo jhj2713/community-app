@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.ResponseDto.ResponseDto;
+import com.example.backend.model.Comment;
 import com.example.backend.model.CommentSaveForm;
 import com.example.backend.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +25,11 @@ public class CommentController {
     public ResponseDto load(@PathVariable long boardId) {
         return new ResponseDto(HttpStatus.OK.value(), commentService.load(boardId));
     }
+
+    @PostMapping("/api/comment/delete")
+    public ResponseDto delete(@RequestBody Comment comment) {
+        commentService.delete(comment);
+        return new ResponseDto(HttpStatus.OK.value(), 1);
+    }
+
 }
