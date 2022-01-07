@@ -138,6 +138,22 @@ const FreeBoard = ({ navigation }) => {
         Alert.alert(err.messsage);
       });
   }, [pageNumber, pageSize]);
+  useEffect(() => {
+    axios
+      .get(
+        `http://10.0.2.2:8000/api/board/freeboards?page=${
+          pageNumber - 1
+        }&size=${pageSize}&sort=id,DESC`,
+      )
+      .then((res) => {
+        const data = res.data.data;
+        setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+        setBoards(data.content);
+      })
+      .catch((err) => {
+        Alert.alert(err.messsage);
+      });
+  });
 
   return (
     <Container>
