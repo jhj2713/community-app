@@ -22,6 +22,7 @@ const GroupText = styled.Text`
 const GroupSelect = ({ navigation }) => {
   const { groups, deleteGroup } = useContext(GroupContext);
   const [showGroup, setShowGroup] = useState([]);
+  const [selectedGroups, setSelectedGroups] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [searchText, setSearchText] = useState("");
@@ -61,20 +62,23 @@ const GroupSelect = ({ navigation }) => {
     dispatch();
   }, []);
   useEffect(() => {
-    if (groups.length == 0) {
+    if (selectedGroups.length == 0) {
       setLastPage(1);
     } else {
-      setLastPage(Math.floor((groups.length - 1) / pageSize) + 1);
+      setLastPage(Math.floor((selectedGroups.length - 1) / pageSize) + 1);
     }
     setShowGroup(
-      groups.slice(pageSize * (pageNumber - 1), pageSize * pageNumber),
+      selectedGroups.slice(pageSize * (pageNumber - 1), pageSize * pageNumber),
     );
-  }, [groups, pageSize]);
+  }, [selectedGroups, pageSize]);
   useEffect(() => {
     setShowGroup(
       groups.slice(pageSize * (pageNumber - 1), pageSize * pageNumber),
     );
   }, [pageNumber, pageSize]);
+  useEffect(() => {
+    setSelectedGroups(groups);
+  }, [groups]);
 
   const ItemView = ({ item }) => {
     return (
@@ -117,15 +121,10 @@ const GroupSelect = ({ navigation }) => {
   };
   const _handleSearchButtonPress = () => {
     if (searchText == "") {
-      setShowGroup(
-        groups.slice(pageSize * (pageNumber - 1), pageSize * pageNumber),
-      );
+      setSelectedGroups(groups);
     } else {
-      const groupArr = groups.filter((group) =>
-        group.name.includes(searchText),
-      );
-      setShowGroup(
-        groupArr.slice(pageSize * (pageNumber - 1), pageSize * pageNumber),
+      setSelectedGroups(
+        groups.filter((group) => group.name.includes(searchText)),
       );
     }
   };
