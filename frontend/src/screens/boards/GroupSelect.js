@@ -25,6 +25,9 @@ const GroupSelect = ({ navigation }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [searchText, setSearchText] = useState("");
+  const [pageSize, setPageSize] = useState(0);
+  const [layoutHeight, setLayoutHeight] = useState(0);
+  const [itemHeight, setItemHeight] = useState(0);
 
   const { dispatch } = useContext(GroupContext);
 
@@ -42,6 +45,18 @@ const GroupSelect = ({ navigation }) => {
     });
   });
 
+  const _handleLayout = (e) => {
+    setLayoutHeight(e.nativeEvent.layout.height);
+  };
+  const _handleItem = (e) => {
+    setItemHeight(e.nativeEvent.layout.height);
+  };
+  useEffect(() => {
+    if (!pageSize || pageSize === Infinity || pageSize === 0) {
+      setPageSize(Math.floor(layoutHeight / itemHeight));
+    }
+  }, [layoutHeight, itemHeight]);
+
   useEffect(() => {
     dispatch();
   }, []);
@@ -49,13 +64,17 @@ const GroupSelect = ({ navigation }) => {
     if (groups.length == 0) {
       setLastPage(1);
     } else {
-      setLastPage(Math.floor((groups.length - 1) / 7) + 1);
+      setLastPage(Math.floor((groups.length - 1) / pageSize) + 1);
     }
-    setShowGroup(groups.slice(7 * (pageNumber - 1), 7 * pageNumber));
-  }, [groups]);
+    setShowGroup(
+      groups.slice(pageSize * (pageNumber - 1), pageSize * pageNumber),
+    );
+  }, [groups, pageSize]);
   useEffect(() => {
-    setShowGroup(groups.slice(7 * (pageNumber - 1), 7 * pageNumber));
-  }, [pageNumber]);
+    setShowGroup(
+      groups.slice(pageSize * (pageNumber - 1), pageSize * pageNumber),
+    );
+  }, [pageNumber, pageSize]);
 
   const ItemView = ({ item }) => {
     return (
@@ -83,6 +102,7 @@ const GroupSelect = ({ navigation }) => {
             { cancelable: false },
           )
         }
+        onLayout={_handleItem}
       >
         <GroupText>{item.name}</GroupText>
       </GroupBox>
@@ -110,7 +130,11 @@ const GroupSelect = ({ navigation }) => {
         setSearchText={setSearchText}
         onPress={_handleSearchButtonPress}
       />
-      <FlatList data={showGroup} renderItem={ItemView} />
+      <FlatList
+        onLayout={_handleLayout}
+        data={showGroup}
+        renderItem={ItemView}
+      />
       <Pagination
         pageNumber={pageNumber}
         lastPage={lastPage}

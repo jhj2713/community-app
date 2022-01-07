@@ -41,6 +41,9 @@ const GroupBoard = ({ route, navigation }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [boards, setBoards] = useState([]);
+  const [pageSize, setPageSize] = useState(0);
+  const [layoutHeight, setLayoutHeight] = useState(0);
+  const [itemHeight, setItemHeight] = useState(0);
 
   const _handleSearchButtonPress = () => {
     if (searchText === "") {
@@ -48,7 +51,7 @@ const GroupBoard = ({ route, navigation }) => {
         .get(
           `http://10.0.2.2:8000/api/board/groupboards/${category}?page=${
             pageNumber - 1
-          }&size=7&sort=id,DESC`,
+          }&size=${pageSize}&sort=id,DESC`,
         )
         .then((res) => {
           const data = res.data.data;
@@ -67,7 +70,7 @@ const GroupBoard = ({ route, navigation }) => {
         .get(
           `http://10.0.2.2:8000/api/board/groupboard/${category}/${searchText}?page=${
             pageNumber - 1
-          }&size=7&sort=id,DESC`,
+          }&size=${pageSize}&sort=id,DESC`,
         )
         .then((res) => {
           const data = res.data.data;
@@ -96,6 +99,7 @@ const GroupBoard = ({ route, navigation }) => {
         onPress={() =>
           navigation.navigate("GroupBoardDetail", { routeName, board: item })
         }
+        onLayout={_handleItem}
       >
         <BoardTitle>{item.title}</BoardTitle>
         <BoardUser>{item.user.username}</BoardUser>
@@ -103,12 +107,23 @@ const GroupBoard = ({ route, navigation }) => {
     );
   };
 
+  const _handleLayout = (e) => {
+    setLayoutHeight(e.nativeEvent.layout.height);
+  };
+  const _handleItem = (e) => {
+    setItemHeight(e.nativeEvent.layout.height);
+  };
+  useEffect(() => {
+    if (!pageSize || pageSize === Infinity || pageSize === 0) {
+      setPageSize(Math.floor(layoutHeight / itemHeight));
+    }
+  }, [layoutHeight, itemHeight]);
   useEffect(() => {
     axios
       .get(
         `http://10.0.2.2:8000/api/board/groupboards/${category}?page=${
           pageNumber - 1
-        }&size=7&sort=id,DESC`,
+        }&size=${pageSize}&sort=id,DESC`,
       )
       .then((res) => {
         const data = res.data.data;
@@ -118,7 +133,23 @@ const GroupBoard = ({ route, navigation }) => {
       .catch((err) => {
         Alert.alert(err.messsage);
       });
-  }, [pageNumber]);
+  }, [pageNumber, pageSize]);
+  useEffect(() => {
+    axios
+      .get(
+        `http://10.0.2.2:8000/api/board/groupboards/${category}?page=${
+          pageNumber - 1
+        }&size=${pageSize}&sort=id,DESC`,
+      )
+      .then((res) => {
+        const data = res.data.data;
+        setLastPage(Math.floor((data.totalElements - 1) / data.size) + 1);
+        setBoards(data.content);
+      })
+      .catch((err) => {
+        Alert.alert(err.messsage);
+      });
+  });
 
   return (
     <Container>
@@ -127,7 +158,7 @@ const GroupBoard = ({ route, navigation }) => {
         setSearchText={setSearchText}
         onPress={_handleSearchButtonPress}
       />
-      <BoardsContainer>
+      <BoardsContainer onLayout={_handleLayout}>
         <FlatList data={boards} renderItem={ItemView} />
       </BoardsContainer>
       <Pagination
