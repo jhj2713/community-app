@@ -40,6 +40,9 @@ const FreeBoard = ({ navigation }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [boards, setBoards] = useState([]);
+  const [pageSize, setPageSize] = useState(0);
+  const [layoutHeight, setLayoutHeight] = useState(0);
+  const [itemHeight, setItemHeight] = useState(0);
 
   const _handleSearchBtnPress = () => {
     if (searchText === "") {
@@ -47,7 +50,7 @@ const FreeBoard = ({ navigation }) => {
         .get(
           `http://10.0.2.2:8000/api/board/freeboards?page=${
             pageNumber - 1
-          }&size=7&sort=id,DESC`,
+          }&size=${pageSize}&sort=id,DESC`,
         )
         .then((res) => {
           const data = res.data.data;
@@ -66,7 +69,7 @@ const FreeBoard = ({ navigation }) => {
         .get(
           `http://10.0.2.2:8000/api/board/freeboard/${searchText}?page=${
             pageNumber - 1
-          }&size=7&sort=id,DESC`,
+          }&size=${pageSize}&sort=id,DESC`,
         )
         .then((res) => {
           const data = res.data.data;
@@ -99,6 +102,7 @@ const FreeBoard = ({ navigation }) => {
             board: item,
           });
         }}
+        onLayout={_handleItem}
       >
         <BoardTitle>{item.title}</BoardTitle>
         <BoardUser>{item.user.username}</BoardUser>
@@ -106,15 +110,24 @@ const FreeBoard = ({ navigation }) => {
     );
   };
 
+  const _handleLayout = (e) => {
+    setLayoutHeight(e.nativeEvent.layout.height);
+  };
+  const _handleItem = (e) => {
+    setItemHeight(e.nativeEvent.layout.height);
+  };
   useEffect(() => {
-    setPageNumber(1);
-  }, []);
+    if (!pageSize || pageSize === Infinity || pageSize === 0) {
+      setPageSize(Math.floor(layoutHeight / itemHeight));
+    }
+  }, [layoutHeight, itemHeight]);
+
   useEffect(() => {
     axios
       .get(
         `http://10.0.2.2:8000/api/board/freeboards?page=${
           pageNumber - 1
-        }&size=7&sort=id,DESC`,
+        }&size=${pageSize}&sort=id,DESC`,
       )
       .then((res) => {
         const data = res.data.data;
@@ -124,7 +137,7 @@ const FreeBoard = ({ navigation }) => {
       .catch((err) => {
         Alert.alert(err.messsage);
       });
-  }, [pageNumber]);
+  }, [pageNumber, pageSize]);
 
   return (
     <Container>
@@ -133,7 +146,7 @@ const FreeBoard = ({ navigation }) => {
         setSearchText={setSearchText}
         onPress={_handleSearchBtnPress}
       />
-      <BoardsContainer>
+      <BoardsContainer onLayout={_handleLayout}>
         <FlatList data={boards} renderItem={ItemView} />
       </BoardsContainer>
       <Pagination

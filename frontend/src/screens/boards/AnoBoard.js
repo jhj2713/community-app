@@ -36,6 +36,9 @@ const AnoBoard = ({ navigation }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [boards, setBoards] = useState([]);
+  const [pageSize, setPageSize] = useState(0);
+  const [layoutHeight, setLayoutHeight] = useState(0);
+  const [itemHeight, setItemHeight] = useState(0);
 
   const _handleSearchBtnPress = () => {
     if (searchText === "") {
@@ -43,7 +46,7 @@ const AnoBoard = ({ navigation }) => {
         .get(
           `http://10.0.2.2:8000/api/board/anoboards?page=${
             pageNumber - 1
-          }&size=7&sort=id,DESC`,
+          }&size=${pageSize}&sort=id,DESC`,
         )
         .then((res) => {
           const data = res.data.data;
@@ -62,7 +65,7 @@ const AnoBoard = ({ navigation }) => {
         .get(
           `http://10.0.2.2:8000/api/board/anoboard/${searchText}?page=${
             pageNumber - 1
-          }&size=7&sort=id,DESC`,
+          }&size=${pageSize}&sort=id,DESC`,
         )
         .then((res) => {
           const data = res.data.data;
@@ -85,6 +88,18 @@ const AnoBoard = ({ navigation }) => {
     setPageNumber((num) => setPageNumber(num + 1));
   };
 
+  const _handleLayout = (e) => {
+    setLayoutHeight(e.nativeEvent.layout.height);
+  };
+  const _handleItem = (e) => {
+    setItemHeight(e.nativeEvent.layout.height);
+  };
+  useEffect(() => {
+    if (!pageSize || pageSize === Infinity || pageSize === 0) {
+      setPageSize(Math.floor(layoutHeight / itemHeight));
+    }
+  }, [layoutHeight, itemHeight]);
+
   const ItemView = ({ item }) => {
     return (
       <BoardBox
@@ -95,6 +110,7 @@ const AnoBoard = ({ navigation }) => {
             board: item,
           });
         }}
+        onLayout={_handleItem}
       >
         <BoardTitle>{item.title}</BoardTitle>
       </BoardBox>
@@ -106,7 +122,7 @@ const AnoBoard = ({ navigation }) => {
       .get(
         `http://10.0.2.2:8000/api/board/anoboards?page=${
           pageNumber - 1
-        }&size=7&sort=id,DESC`,
+        }&size=${pageSize}&sort=id,DESC`,
       )
       .then((res) => {
         const data = res.data.data;
@@ -116,7 +132,7 @@ const AnoBoard = ({ navigation }) => {
       .catch((err) => {
         Alert.alert(err.messsage);
       });
-  }, [pageNumber]);
+  }, [pageNumber, pageSize]);
 
   return (
     <Container>
@@ -125,7 +141,7 @@ const AnoBoard = ({ navigation }) => {
         setSearchText={setSearchText}
         onPress={_handleSearchBtnPress}
       />
-      <BoardsContainer>
+      <BoardsContainer onLayout={_handleLayout}>
         <FlatList data={boards} renderItem={ItemView} />
       </BoardsContainer>
       <Pagination
