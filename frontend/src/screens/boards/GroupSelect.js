@@ -117,9 +117,16 @@ const GroupSelect = ({ navigation }) => {
   };
   const _handleSearchButtonPress = () => {
     if (searchText == "") {
-      setShowGroup(groups);
+      setShowGroup(
+        groups.slice(pageSize * (pageNumber - 1), pageSize * pageNumber),
+      );
     } else {
-      setShowGroup(groups.filter((group) => group.name.includes(searchText)));
+      const groupArr = groups.filter((group) =>
+        group.name.includes(searchText),
+      );
+      setShowGroup(
+        groupArr.slice(pageSize * (pageNumber - 1), pageSize * pageNumber),
+      );
     }
   };
 
