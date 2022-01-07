@@ -123,6 +123,9 @@ const UserDetail = () => {
         });
     }
   };
+  const _handleLogout = () => {
+    dispatch({ userId: null, username: null, password: null, id: null });
+  };
 
   return (
     <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
@@ -185,6 +188,7 @@ const UserDetail = () => {
           onPress={_handleUpdateButtonPress}
           disabled={disabled}
         />
+        <Button title="로그아웃" isFilled={false} onPress={_handleLogout} />
       </Container>
     </KeyboardAwareScrollView>
   );
